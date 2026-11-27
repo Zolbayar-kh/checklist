@@ -311,6 +311,21 @@ textarea.inp{resize:vertical;min-height:80px;border-radius:22px}
 .brow .bl{grid-column:1/-1;font-size:12.5px;color:var(--soft)}
 .brow.over .mbar i{background:var(--high)!important}
 .brow.over .bl{color:var(--high);font-weight:500}
+.brow.edit{grid-template-columns:auto minmax(0,1fr) 116px auto;gap:8px;padding:7px 0}
+.brow.edit .bname{width:100%;text-align:left;font-weight:500}
+.brow.edit input[type=number]{width:100%}
+.bdot{width:36px;height:36px;border:0;border-radius:50%;background:var(--g3);display:grid;place-items:center;color:var(--soft);padding:0}
+.bdot .dot{width:14px;height:14px}
+.bdel{width:36px;height:36px;border:0;border-radius:50%;background:none;color:var(--soft);font-size:20px;line-height:1;padding:0}
+.bdel:hover:not(:disabled){background:var(--g3);color:var(--high)}
+.bdel:disabled{opacity:.25;cursor:default}
+.bdel.addb{background:var(--dark);color:var(--onDark)}
+.bdel.addb:hover{background:var(--dark);color:var(--onDark);opacity:.9}
+.brow.add{border-top:1px dashed var(--line)}
+.bfoot{font-size:13px;color:var(--soft);padding:8px 0 6px;display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;justify-content:space-between;border-top:1px solid var(--line)}
+.brow.edit .bdot{grid-area:d}.brow.edit .bname{grid-area:n}.brow.edit input[type=number]{grid-area:a}.brow.edit .bdel{grid-area:x}
+.brow.edit{grid-template-areas:"d n a x"}
+@media(max-width:480px){.brow.edit{grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"d n x" "d a x";row-gap:6px;padding:10px 0}.brow.edit input[type=number]{text-align:left}}
 .brow input{width:130px;border:0;background:var(--g3);border-radius:999px;padding:0 12px;min-height:40px;font:inherit;font-size:16px;color:var(--ink);text-align:right}
 .txday{font-size:13px;color:var(--soft);margin:14px 4px 6px;display:flex;justify-content:space-between}
 .txg{background:var(--card);border-radius:22px;padding:2px 12px}
@@ -874,14 +889,18 @@ function norm(s){
  const budgets=seedFin?{food:600000,home:900000,trans:150000,bills:1250000,fun:200000}:(s.budgets&&typeof s.budgets==='object'?Object.fromEntries(Object.entries(s.budgets).filter(([k,v])=>+v>0).map(([k,v])=>[k,+v])):{});
  const jars=seedFin?sampleJars():(Array.isArray(s.jars)?s.jars:[]).map(j=>({id:j.id||uid(),name:String(j.name||''),target:Math.max(0,+j.target||0),saved:Math.max(0,+j.saved||0),due:j.due||'',color:PAL[j.color]?j.color:'teal',sample:!!j.sample}));
  const fc=s.fcats&&typeof s.fcats==='object'?s.fcats:{},fcl=a=>(Array.isArray(a)?a:[]).filter(c=>c&&c.id&&c.name).map(c=>({id:String(c.id),name:String(c.name).slice(0,30),color:/^#[0-9a-f]{6}$/i.test(c.color)?c.color:'#8d8794'}));
- return{cats,items,horizons,plans,challenges,tx,budgets,jars,fcats:{exp:fcl(fc.exp),inc:fcl(fc.inc)},earned:Array.isArray(s.earned)?s.earned:null,sb:seedFin?true:!!s.sb,fv:1,updated:s.updated||0};
+ return{cats,items,horizons,plans,challenges,tx,budgets,jars,fcats:{exp:fcl(fc.exp),inc:fcl(fc.inc)},fnames:objOf(s.fnames,v=>typeof v==='string'&&v.trim()?v.slice(0,30):null),fcolors:objOf(s.fcolors,v=>/^#[0-9a-f]{6}$/i.test(v)?v:null),fhidden:Array.isArray(s.fhidden)?s.fhidden.filter(x=>typeof x==='string'):[],earned:Array.isArray(s.earned)?s.earned:null,sb:seedFin?true:!!s.sb,fv:1,updated:s.updated||0};
 }
 const REP={daily:'Өдөр бүр',weekly:'7 хоног бүр',monthly:'Сар бүр'};
 const EXP=[['food','Хоол хүнс','#f0844f'],['home','Орон байр','#9b6cf0'],['trans','Тээвэр','#4e9be8'],['bills','Төлбөр, зээл','#e866a0'],['health','Эрүүл мэнд','#2fb3a0'],['fun','Зугаа цэнгэл','#8fb83a'],['shop','Хувцас, бараа','#d9a21b'],['edu','Боловсрол','#5b6ee8'],['other','Бусад','#8d8794']];
 const INC=[['salary','Цалин','#3f9a5c'],['side','Нэмэлт орлого','#8fb83a'],['gift','Бэлэг, тусламж','#2fb3a0'],['iother','Бусад орлого','#8d8794']];
+const objOf=(o,f)=>{const r={};if(o&&typeof o==='object')for(const[k,v]of Object.entries(o)){const x=f(v);if(x!=null)r[k]=x}return r};
 const FCOL=['#e0607e','#3aa6b9','#c98a2b','#7a6cf0','#4fa36b','#d36bd0','#5d86c9','#b5642f'];
-const finList=type=>{const base=type==='inc'?INC:EXP,cu=((S&&S.fcats&&S.fcats[type])||[]).map(c=>[c.id,c.name,c.color,1]);return base.slice(0,-1).concat(cu,[base[base.length-1]])};
-const txCat=(type,id)=>{const l=finList(type);const f=l.find(c=>c[0]===id)||l[l.length-1];return{id:f[0],name:f[1],color:f[2]}};
+const finList=(type,all)=>{const st=typeof S!=='undefined'?S:null,base=type==='inc'?INC:EXP,nm=(st&&st.fnames)||{},cl=(st&&st.fcolors)||{},hid=(st&&st.fhidden)||[];
+ const ov=b=>[b[0],nm[b[0]]||b[1],cl[b[0]]||b[2]],cu=((st&&st.fcats&&st.fcats[type])||[]).map(c=>[c.id,c.name,c.color,1]);
+ const l=base.slice(0,-1).map(ov).concat(cu,[ov(base[base.length-1])]);return all?l:l.filter(c=>!hid.includes(c[0]))};
+const FALL=['#f0844f','#9b6cf0','#4e9be8','#e866a0','#2fb3a0','#8fb83a','#d9a21b','#5b6ee8','#e0607e','#3aa6b9','#c98a2b','#4fa36b','#d36bd0','#8d8794'];
+const txCat=(type,id)=>{const l=finList(type,true);const f=l.find(c=>c[0]===id)||l[l.length-1];return{id:f[0],name:f[1],color:f[2]}};
 function sampleTx(){
  const t=today(),m=t.slice(0,8),d=n=>m+pad(Math.max(1,Math.min(+t.slice(8),n)));
  return[['inc',2800000,'salary',d(5),'11-р сарын цалин'],['inc',450000,'side',d(18),'Орчуулгын ажил'],['exp',900000,'home',d(5),'Түрээс'],['exp',1250000,'bills',d(10),'Орон сууцны зээл'],
@@ -1329,13 +1348,24 @@ function renderFin(){
   '<button type="button" class="jar add" data-jadd><svg class="i" style="width:28px;height:28px"><use href="#i-plus"/></svg>Шинэ сав</button>';
  const spent={};list.filter(x=>x.type==='exp').forEach(x=>spent[x.cat]=(spent[x.cat]||0)+x.amount);
  $('budEdit').textContent=ui.budEdit?'Болсон':'Засах';
- const rows=finList('exp').filter(([k])=>ui.budEdit||S.budgets[k]||spent[k]).sort((a,b)=>(spent[b[0]]||0)-(spent[a[0]]||0));
  const maxS=Math.max(1,...Object.values(spent));
- $('budget').innerHTML=rows.length?rows.map(([k,n,c])=>{const sp=spent[k]||0,b=S.budgets[k]||0,over=b&&sp>b,pc=b?Math.min(100,sp/b*100):sp/maxS*100;
-   return'<div class="brow'+(over?' over':'')+'" style="--c:'+c+'"><div class="bn"><span class="dot"></span><span>'+n+'</span></div>'+
-    (ui.budEdit?'<input type="number" inputmode="numeric" min="0" step="10000" value="'+(b||'')+'" placeholder="Төсөв ₮" data-bud="'+k+'" aria-label="'+n+' төсөв">':'<div class="bv">'+money(sp)+(b?' <span style="color:var(--soft)">/ '+money(b)+'</span>':'')+'</div>')+
-    (ui.budEdit?'':'<div class="mbar"><i style="width:'+pc+'%;'+(b?'':'opacity:.4')+'"></i></div><div class="bl">'+(b?(over?money(sp-b)+' хэтэрсэн':money(b-sp)+' үлдсэн'):'Төсөв тогтоогоогүй')+'</div>')+'</div>'}).join('')
-  :'<div class="empty" style="background:none">Энэ сард зарлага алга. Дээрх + товчоор гүйлгээ нэмээрэй.</div>';
+ if(ui.budEdit){
+  const all=finList('exp'),bt=Object.values(S.budgets).reduce((a,v)=>a+v,0),hid=finList('exp',true).filter(c=>S.fhidden.includes(c[0]));
+  $('budget').innerHTML=all.map(([k,n,c,cu])=>'<div class="brow edit" style="--c:'+c+'"><button type="button" class="bdot" data-bcol="'+esc(k)+'" aria-label="'+esc(n)+' өнгө солих"><span class="dot"></span></button>'+
+    '<input class="bname" value="'+esc(n)+'" maxlength="30" data-bname="'+esc(k)+'" aria-label="Ангиллын нэр">'+
+    '<input type="number" inputmode="numeric" min="0" step="10000" value="'+(S.budgets[k]||'')+'" placeholder="Төсөв ₮" data-bud="'+esc(k)+'" aria-label="'+esc(n)+' төсөв">'+
+    '<button type="button" class="bdel" data-bdel="'+esc(k)+'"'+(k==='other'?' disabled title="«Бусад» ангиллыг устгах боломжгүй"':'')+' aria-label="'+esc(n)+' устгах">×</button></div>').join('')+
+   '<div class="brow edit add"><span class="bdot"><svg class="i" style="width:16px;height:16px"><use href="#i-plus"/></svg></span><input class="bname" id="bnNew" maxlength="30" placeholder="Шинэ ангилал" aria-label="Шинэ ангиллын нэр"><input type="number" inputmode="numeric" min="0" step="10000" id="bnAmt" placeholder="Төсөв ₮" aria-label="Шинэ ангиллын төсөв"><button type="button" class="bdel addb" id="bnAdd" aria-label="Ангилал нэмэх">+</button></div>'+
+   '<div class="bfoot"><span>Нийт төсөв: <b style="color:var(--ink)">'+money(bt)+'</b></span><span>Өнгөт цэг дээр дарж өнгө солино</span></div>'+
+   (hid.length?'<div class="bfoot" style="justify-content:flex-start">Нуусан: '+hid.map(([k,n])=>'<button type="button" class="pill-btn" data-bunhide="'+esc(k)+'">'+esc(n)+' ↺</button>').join('')+'</div>':'');
+ }else{
+  const rows=finList('exp',true).filter(([k])=>(!S.fhidden.includes(k)&&S.budgets[k])||spent[k]).sort((a,b)=>(spent[b[0]]||0)-(spent[a[0]]||0));
+  $('budget').innerHTML=rows.length?rows.map(([k,n,c])=>{const sp=spent[k]||0,b=S.budgets[k]||0,over=b&&sp>b,pc=b?Math.min(100,sp/b*100):sp/maxS*100;
+    return'<div class="brow'+(over?' over':'')+'" style="--c:'+c+'"><div class="bn"><span class="dot"></span><span>'+esc(n)+'</span></div>'+
+     '<div class="bv">'+money(sp)+(b?' <span style="color:var(--soft)">/ '+money(b)+'</span>':'')+'</div>'+
+     '<div class="mbar"><i style="width:'+pc+'%;'+(b?'':'opacity:.4')+'"></i></div><div class="bl">'+(b?(over?money(sp-b)+' хэтэрсэн':money(b-sp)+' үлдсэн'):'Төсөв тогтоогоогүй')+'</div></div>'}).join('')
+   :'<div class="empty" style="background:none">Төсөв тогтоогоогүй, энэ сард зарлага алга.<br><button class="chip plain" type="button" id="budStart">Төсөв тогтоох</button></div>';
+ }
  $('txChips').innerHTML=[['all','Бүгд'],['exp','Зарлага'],['inc','Орлого']].map(([k,v])=>'<button type="button" class="chip plain" data-tf="'+k+'" aria-pressed="'+(ui.tf===k)+'">'+v+'</button>').join('');
  const tl=list.filter(x=>ui.tf==='all'||x.type===ui.tf).sort((a,b)=>b.date.localeCompare(a.date));
  $('txCount').textContent=tl.length+' бичлэг';
@@ -1394,7 +1424,32 @@ function jarPut(id,sign=1,fixed){const j=S.jars.find(x=>x.id===id),inp=document.
  const was=j.saved,wasFull=j.target&&j.saved>=j.target;j.saved=Math.max(0,j.saved+sign*a);j.sample=false;
  toast(sign>0?money(a)+' «'+j.name.slice(0,24)+'» савд нэмэгдлээ'+(!wasFull&&j.saved>=j.target?' · Зорилтод хүрлээ!':''):money(Math.min(a,was))+' «'+j.name.slice(0,24)+'» савнаас гаргалаа',()=>{j.saved=was});commit()}
 $('budEdit').onclick=()=>{ui.budEdit=!ui.budEdit;if(!ui.budEdit)commit();else renderFin()};
-$('budget').addEventListener('change',e=>{const k=e.target.dataset.bud;if(!k)return;const v=Math.round(+e.target.value||0);if(v>0)S.budgets[k]=v;else delete S.budgets[k];S.sb=false;persist()});
+function budAdd(){const n=$('bnNew').value.trim();if(!n){$('bnNew').focus();return}
+ const ex=finList('exp',true).find(c=>c[1].toLowerCase()===n.toLowerCase());
+ const amt=Math.round(+$('bnAmt').value||0);let id;
+ if(ex){id=ex[0];S.fhidden=S.fhidden.filter(x=>x!==id)}else{id='fc'+uid();S.fcats.exp.push({id,name:n,color:FCOL[(S.fcats.exp.length+S.fcats.inc.length)%FCOL.length]})}
+ if(amt>0)S.budgets[id]=amt;S.sb=false;persist();renderFin();$('bnNew').focus()}
+$('budget').addEventListener('click',e=>{
+ if(e.target.closest('#budStart')){ui.budEdit=true;renderFin();return}
+ if(e.target.closest('#bnAdd')){budAdd();return}
+ const cb=e.target.closest('[data-bcol]');
+ if(cb){const k=cb.dataset.bcol,cu=S.fcats.exp.find(c=>c.id===k),cur=(finList('exp',true).find(c=>c[0]===k)||[])[2],nx=FALL[(FALL.indexOf(cur)+1)%FALL.length];
+  if(cu)cu.color=nx;else S.fcolors[k]=nx;persist();renderFin();return}
+ const db=e.target.closest('[data-bdel]');
+ if(db&&!db.disabled){const k=db.dataset.bdel,cu=S.fcats.exp.find(c=>c.id===k),used=S.tx.some(t=>t.cat===k),was=S.budgets[k],nm=(finList('exp',true).find(c=>c[0]===k)||[,''])[1];
+  delete S.budgets[k];
+  if(cu&&!used){const i=S.fcats.exp.indexOf(cu);S.fcats.exp.splice(i,1);toast('«'+nm+'» устгагдлаа',()=>{S.fcats.exp.splice(i,0,cu);if(was)S.budgets[k]=was})}
+  else{S.fhidden.push(k);toast('«'+nm+'» нуугдлаа'+(used?' (гүйлгээнүүд нь хэвээр)':''),()=>{S.fhidden=S.fhidden.filter(x=>x!==k);if(was)S.budgets[k]=was})}
+  persist();renderFin();return}
+ const uh=e.target.closest('[data-bunhide]');if(uh){S.fhidden=S.fhidden.filter(x=>x!==uh.dataset.bunhide);persist();renderFin();return}
+});
+$('budget').addEventListener('keydown',e=>{if(e.key==='Enter'&&(e.target.id==='bnNew'||e.target.id==='bnAmt')){e.preventDefault();budAdd()}if(e.key==='Enter'&&e.target.dataset&&e.target.dataset.bname)e.target.blur()});
+$('budget').addEventListener('change',e=>{
+ const bn=e.target.dataset&&e.target.dataset.bname;
+ if(bn){const v=e.target.value.trim().slice(0,30),cu=S.fcats.exp.find(c=>c.id===bn),def=(EXP.find(c=>c[0]===bn)||[])[1];
+  if(!v){e.target.value=cu?cu.name:(S.fnames[bn]||def);return}
+  if(cu)cu.name=v;else if(v===def)delete S.fnames[bn];else S.fnames[bn]=v;persist();return}
+ const k=e.target.dataset.bud;if(!k)return;const v=Math.round(+e.target.value||0);if(v>0)S.budgets[k]=v;else delete S.budgets[k];S.sb=false;persist()});
 
 /* ===== stats ===== */
 const dayOf=ts=>ymd(new Date(ts));
