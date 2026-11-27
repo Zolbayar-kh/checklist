@@ -1684,7 +1684,7 @@ async function flush(){
  if(saving){again=true;return}
  saving=true;
  try{const{error}=await sb.from('app_state').upsert({user_id:uidCur,data:JSON.parse(JSON.stringify(S)),updated_at:new Date(S.updated||Date.now()).toISOString()},{onConflict:'user_id'});if(error)throw error;setStatus('Синк хийгдсэн · '+timeNow())}
- catch(e){setStatus(navigator.onLine===false?'Интернетгүй байна. Холбогдох үед автоматаар синк хийнэ.':'Синк хийж чадсангүй. Дараа дахин оролдоно.')}
+ catch(e){setStatus(navigator.onLine===false?'Интернетгүй байна. Холбогдох үед автоматаар синк хийнэ.':/permission denied/i.test(String(e&&e.message))?'Синк хийж чадсангүй: Supabase-д хандах эрх тохируулагдаагүй (supabase.sql-ийг дахин ажиллуулна уу)':'Синк хийж чадсангүй. Дараа дахин оролдоно.')}
  saving=false;if(again){again=false;flush()}
 }
 async function pull(){
@@ -1808,7 +1808,7 @@ function pjStats(pid){const t=pjTasks(pid),p=pjOf(pid)||{},d=t.filter(x=>x.statu
  const late=t.filter(x=>x.status!=='done'&&x.due_date&&x.due_date<today()).length;
  let tp=null,left=null;if(p.start_date&&p.end_date){const all=dDiff(p.start_date,p.end_date);tp=all<=0?1:Math.max(0,Math.min(1,dDiff(p.start_date,today())/all))}if(p.end_date)left=dDiff(today(),p.end_date);
  return{n:t.length,d,pct:t.length?Math.round(d/t.length*100):0,pl,ac,cap,base,rem:base-ac,over:base>0&&ac>base,late,tp,left}}
-function pjErrMsg(e){const m=String(e&&e.message||e||'');if(/permission|row-level|not a project member/i.test(m))return'Эрх хүрэхгүй байна.';if(/fetch|network/i.test(m))return'Интернет холболтоо шалгана уу.';return m||'Алдаа гарлаа.'}
+function pjErrMsg(e){const m=String(e&&e.message||e||'');if(/permission denied for (table|function)/i.test(m))return'Supabase-д хандах эрх тохируулагдаагүй байна. supabase-projects.sql-ийг дахин ажиллуулна уу. ('+m+')';if(/permission|row-level|not a project member/i.test(m))return'Эрх хүрэхгүй байна ('+m+').';if(/fetch|network/i.test(m))return'Интернет холболтоо шалгана уу.';return m||'Алдаа гарлаа.'}
 function pjFail(e){toast('Хадгалж чадсангүй: '+pjErrMsg(e));pjLoad(true)}
 async function pjLoad(silent){
  if(!sb||mode!=='cloud')return;
@@ -1820,7 +1820,7 @@ async function pjLoad(silent){
   PJ.list=p.data||[];PJ.members=g(m.data,'project_id');PJ.tasks=g(t.data,'project_id');PJ.invites=g(i.data,'project_id');PJ.loaded=true;PJ.err='';
   try{localStorage.setItem('mn-pj:'+uidCur,JSON.stringify({list:PJ.list,members:PJ.members,tasks:PJ.tasks,invites:PJ.invites}))}catch(e){}
   pjSubscribe();
- }catch(e){const msg=String(e&&(e.message||e.code)||'');PJ.err=(e&&(e.code==='42P01'||e.code==='PGRST205'||e.code==='PGRST200'))||/does not exist|schema cache|could not find/i.test(msg)?'setup':'net'}
+ }catch(e){const msg=String(e&&(e.message||e.code)||'');PJ.err=(e&&(e.code==='42P01'||e.code==='42501'||e.code==='PGRST205'||e.code==='PGRST200'))||/does not exist|schema cache|could not find|permission denied/i.test(msg)?'setup':'net'}
  if(ui.view==='proj'||ui.view==='pd')render();
 }
 function pjCache(){try{const c=JSON.parse(localStorage.getItem('mn-pj:'+uidCur)||'null');if(c&&Array.isArray(c.list)){Object.assign(PJ,c);PJ.loaded=true}}catch(e){}}

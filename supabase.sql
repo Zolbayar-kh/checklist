@@ -23,3 +23,7 @@ create policy "own_update" on public.app_state
   for update to authenticated using (auth.uid() = user_id) with check (auth.uid() = user_id);
 create policy "own_delete" on public.app_state
   for delete to authenticated using (auth.uid() = user_id);
+
+-- Нэвтэрсэн хэрэглэгчид хүснэгт ашиглах эрх (шинэ Supabase төслүүдэд заавал хэрэгтэй)
+grant usage on schema public to authenticated;
+grant select, insert, update, delete on table public.app_state to authenticated;

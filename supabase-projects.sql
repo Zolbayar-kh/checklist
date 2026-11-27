@@ -221,3 +221,15 @@ begin
   begin alter publication supabase_realtime add table public.projects;        exception when duplicate_object then null; when undefined_object then null; end;
   begin alter publication supabase_realtime add table public.project_members; exception when duplicate_object then null; when undefined_object then null; end;
 end $$;
+
+-- 7. Нэвтэрсэн хэрэглэгчид хүснэгт, функц ашиглах эрх
+--    (Supabase-ийн шинэ төслүүд SQL-ээр үүсгэсэн хүснэгтэд энэ эрхийг автоматаар өгдөггүй)
+grant usage on schema public to authenticated;
+grant select, insert, update, delete on table
+  public.app_state, public.profiles, public.projects,
+  public.project_members, public.project_invites, public.project_tasks
+to authenticated;
+grant execute on function
+  public.is_project_member(uuid), public.is_project_owner(uuid), public.shares_project(uuid),
+  public.invite_to_project(uuid, text), public.accept_project_invites()
+to authenticated;
