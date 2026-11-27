@@ -472,6 +472,58 @@ h1{font-size:44px}
 #chList{grid-template-columns:repeat(3,minmax(0,1fr))}
 #v-plans #planList{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
+.nav .nav-desk{display:none}
+.homecal{display:grid}
+.pjc{padding-top:20px;overflow:hidden}
+.pjstrip{position:absolute;left:0;right:0;top:0;height:6px;background:var(--c)}
+.pjc .m2.over .lb b{color:var(--high)}
+.pavs{display:inline-flex;align-items:center}
+.pavs .pav{margin-left:-8px;box-shadow:0 0 0 2px var(--card)}
+.pavs .pav:first-child{margin-left:0}
+.pav{--as:28px;width:var(--as);height:var(--as);border-radius:50%;background:var(--ac);color:#fff;display:inline-grid;place-items:center;font-weight:700;font-size:calc(var(--as)*.42);flex:none;line-height:1}
+.pav.more{background:var(--g3);color:var(--soft)}
+.ptas{gap:6px;padding:2px 10px 2px 3px}
+.ptm{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:10px;font-size:13px;color:var(--soft)}
+.ptm b{color:var(--ink);font-weight:600;white-space:nowrap}
+.minel{background:var(--card);border-radius:22px;padding:2px 12px}
+.mine{display:flex;align-items:center;gap:10px;width:100%;border:0;border-top:1px solid var(--line);background:none;padding:11px 0;text-align:left;min-height:52px}
+.mine:first-child{border-top:0}
+.mine .mn{flex:1;min-width:0}
+.mine b{display:block;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mine small{color:var(--soft);font-size:13px}
+.pdhead{background:var(--dark);color:var(--onDark);border-radius:28px;padding:20px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px 18px;align-items:center;position:relative;overflow:hidden}
+.pdhead::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 55%,rgba(255,255,255,.06) 56%,transparent 75%);pointer-events:none}
+.pdring{width:104px;height:104px;position:relative}
+.pdring svg{width:100%;height:100%}
+.pdring b{position:absolute;inset:0;display:grid;place-items:center;font-size:26px;font-weight:600}
+.pdring small{font-size:13px}
+.pdst{display:grid;gap:8px}
+.pdst div{display:flex;align-items:baseline;gap:8px}
+.pdst b{font-size:20px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.pdst span{font-size:13px;color:#bdb8c2}
+.pdbud{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.pdbud div{background:rgba(255,255,255,.07);border-radius:16px;padding:10px;font-size:12.5px;color:#bdb8c2;min-width:0}
+.pdbud b{display:block;font-size:clamp(13px,3.5vw,16px);font-weight:600;color:var(--onDark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums}
+.pdbud .over b{color:#ff8a8a}
+.pdbar{grid-column:1/-1;position:relative;height:10px;border-radius:6px;background:rgba(255,255,255,.14);margin-top:-4px}
+.pdbar i{position:absolute;inset:0 auto 0 0;border-radius:6px;background:var(--lime)}
+.pdbar.over i{background:#ff8a8a}
+.pdbar s{position:absolute;top:-4px;bottom:-4px;width:2px;background:#fff;border-radius:1px;opacity:.8}
+.pdnote{grid-column:1/-1;font-size:12.5px;color:#bdb8c2;margin-top:-8px}
+.pdmem{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:14px 0 10px;flex-wrap:wrap}
+.pdst2{margin-bottom:10px}
+.kanban{display:grid;gap:14px}
+.kcol{display:grid;gap:10px;align-content:start}
+.khead{display:flex;align-items:center;justify-content:space-between;color:var(--soft);font-size:14px;padding:0 4px}
+.kempty{border:2px dashed var(--line);border-radius:20px;padding:16px;text-align:center;color:var(--soft);font-size:14px}
+.mrow{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
+.mrow:first-child{border-top:0}
+.mrow .mi{flex:1;min-width:0}
+.mrow b{display:block;font-weight:600;overflow-wrap:anywhere}
+.mrow small{color:var(--soft);font-size:13px;overflow-wrap:anywhere}
+.road .rn .pav{vertical-align:-4px}
+@media(min-width:760px){.kanban.k3{grid-template-columns:repeat(3,minmax(0,1fr))}.pdhead{grid-template-columns:auto minmax(0,1fr) minmax(0,1.4fr)}.pdbud{grid-column:auto}.pdbar,.pdnote{grid-column:2/-1}}
+@media(min-width:1040px){.nav .nav-desk{display:flex}.homecal{display:none}#v-pd .top .circle:first-child{display:grid}}
 [hidden]{display:none!important}
 @media(max-width:380px){.ring{width:108px;height:108px}.prog{gap:12px;padding:16px}.tl{grid-template-columns:48px minmax(0,1fr)}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
@@ -500,6 +552,7 @@ h1{font-size:44px}
  <symbol id="i-medal" viewBox="0 0 24 24"><circle cx="12" cy="14" r="6"/><path d="M8.5 9 6 3h4l2 4 2-4h4l-2.5 6M12 11.5l.9 1.8 2 .3-1.45 1.4.35 2-1.8-.95-1.8.95.35-2L9.1 13.6l2-.3z"/></symbol>
  <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></symbol>
  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15zM10 20.5a2 2 0 0 0 4 0"/></symbol>
+ <symbol id="i-team" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 19.5c.6-3.4 3-5.3 6-5.3s5.4 1.9 6 5.3"/><circle cx="17" cy="9" r="2.5"/><path d="M15.8 14.3c2.6-.2 4.6 1.4 5.2 4.2"/></symbol>
  <symbol id="i-arch" viewBox="0 0 24 24"><rect x="3.5" y="4" width="17" height="5" rx="1.5"/><path d="M5 9v9.5A1.5 1.5 0 0 0 6.5 20h11a1.5 1.5 0 0 0 1.5-1.5V9M10 13h4"/></symbol>
 </svg>
 
@@ -509,6 +562,7 @@ h1{font-size:44px}
   <div class="top">
    <button class="meav" type="button" id="meBtn" data-go="me" aria-label="Профайл">·</button>
    <div class="hi"><b id="greet">Сайн байна уу</b><span id="todayTxt"></span></div>
+   <button class="circle homecal" type="button" data-go="cal" aria-label="Хуваарь"><svg class="i"><use href="#i-cal"/></svg></button>
    <button class="circle dark" type="button" data-add aria-label="Шинэ ажил нэмэх"><svg class="i"><use href="#i-plus"/></svg></button>
   </div>
   <div class="cols"><div class="col-a">
@@ -628,6 +682,32 @@ h1{font-size:44px}
   <div class="badges" id="badges"></div>
  </section>
 
+ <!-- PROJECTS -->
+ <section id="v-proj" hidden>
+  <div class="top">
+   <div class="hi"><b>Төслүүд</b><span id="pjSub"></span></div>
+   <button class="circle dark" type="button" data-pjadd id="pjAdd" aria-label="Шинэ төсөл"><svg class="i"><use href="#i-plus"/></svg></button>
+  </div>
+  <h1>Багийн<strong>төслүүд</strong></h1>
+  <div id="pjNotice"></div>
+  <div id="pjMine"></div>
+  <div class="chips" id="pjChips" style="margin-top:14px"></div>
+  <div class="list grid2" id="pjList" style="margin-top:12px"></div>
+ </section>
+
+ <section id="v-pd" hidden>
+  <div class="top">
+   <button class="circle" type="button" data-go="proj" aria-label="Төслүүд рүү буцах"><svg class="i"><use href="#i-l"/></svg></button>
+   <div class="hi"><b id="pdName"></b><span id="pdSub"></span></div>
+   <button class="circle" type="button" data-pedit aria-label="Төсөл засах"><svg class="i"><use href="#i-list"/></svg></button>
+   <button class="circle dark" type="button" data-ptadd aria-label="Ажил нэмэх"><svg class="i"><use href="#i-plus"/></svg></button>
+  </div>
+  <div class="pdhead" id="pdHead"></div>
+  <div class="pdmem" id="pdMem"></div>
+  <div class="chips" id="pdTabs"></div>
+  <div id="pdBody" style="margin-top:12px"></div>
+ </section>
+
  <!-- PROFILE -->
  <section id="v-me" hidden>
   <div class="top">
@@ -674,7 +754,8 @@ h1{font-size:44px}
 <nav class="nav" aria-label="Цэс">
  <div class="nav-brand"><svg viewBox="0 0 84 84" aria-hidden="true"><defs><linearGradient id="lg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7d9cc"/><stop offset="1" stop-color="#d9c6f5"/></linearGradient></defs><rect width="84" height="84" rx="22" fill="url(#lg2)"/><circle cx="42" cy="42" r="26" fill="#1b1a1d"/><circle cx="42" cy="42" r="18" fill="none" stroke="#fff" stroke-width="5"/><path d="M42 24a18 18 0 1 1-17.6 21.8" fill="none" stroke="#c9dc8a" stroke-width="5" stroke-linecap="round"/><path d="M34 43l6 6 10-12" fill="none" stroke="#c9dc8a" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg><b>Миний checklist</b></div>
  <button type="button" data-go="home" aria-current="page"><svg class="i"><use href="#i-home"/></svg>Нүүр</button>
- <button type="button" data-go="cal"><svg class="i"><use href="#i-cal"/></svg>Хуваарь</button>
+ <button type="button" class="nav-desk" data-go="cal"><svg class="i"><use href="#i-cal"/></svg>Хуваарь</button>
+ <button type="button" data-go="proj"><svg class="i"><use href="#i-team"/></svg>Төсөл</button>
  <button type="button" data-go="plans"><svg class="i"><use href="#i-flag"/></svg>Төлөвлөгөө</button>
  <button type="button" data-go="ch"><svg class="i"><use href="#i-flame"/></svg>Challenge</button>
  <button type="button" data-go="fin"><svg class="i"><use href="#i-wallet"/></svg>Санхүү</button>
@@ -802,6 +883,54 @@ h1{font-size:44px}
   <button class="del" type="button" id="fDel" hidden>Устгах</button>
  </form>
 </div>
+<div class="veil" id="veilPP">
+ <form class="sheet" id="ppSheet" autocomplete="off" role="dialog" aria-modal="true" aria-labelledby="ppTitle">
+  <div class="shead">
+   <button class="circle" type="button" data-close aria-label="Хаах"><svg class="i"><use href="#i-x"/></svg></button>
+   <b id="ppTitle">Шинэ төсөл</b>
+   <button class="circle" type="submit" aria-label="Хадгалах"><svg class="i"><use href="#i-ok"/></svg></button>
+  </div>
+  <label class="fl" for="ppN">Төслийн нэр</label>
+  <input class="inp" id="ppN" maxlength="120" placeholder="Жишээ нь: Гэрийн засвар">
+  <label class="fl" for="ppD">Тайлбар</label>
+  <textarea class="inp" id="ppD" rows="2" placeholder="Зорилго, хамрах хүрээ…"></textarea>
+  <span class="fl">Эхлэх ба дуусах огноо</span>
+  <div class="two"><input class="inp" id="ppS" type="date" aria-label="Эхлэх огноо"><input class="inp" id="ppE" type="date" aria-label="Дуусах огноо"></div>
+  <label class="fl" for="ppB">Нийт төсөв (₮, заавал биш)</label>
+  <input class="inp" id="ppB" type="number" inputmode="numeric" min="0" step="10000" placeholder="Хоосон бол ажлуудын төлөвлөсөн дүнгээр тооцно">
+  <span class="fl">Өнгө</span>
+  <div class="sw" id="ppCol"></div>
+  <button class="big" type="submit" id="ppSave">Төсөл үүсгэх</button>
+  <button class="del" type="button" id="ppArch" hidden style="color:var(--ink)">Архивлах</button>
+  <button class="del" type="button" id="ppDel" hidden>Төсөл устгах</button>
+ </form>
+</div>
+
+<div class="veil" id="veilPT">
+ <form class="sheet" id="ptSheet" autocomplete="off" role="dialog" aria-modal="true" aria-labelledby="ptTitle">
+  <div class="shead">
+   <button class="circle" type="button" data-close aria-label="Хаах"><svg class="i"><use href="#i-x"/></svg></button>
+   <b id="ptTitle">Шинэ ажил</b>
+   <button class="circle" type="submit" aria-label="Хадгалах"><svg class="i"><use href="#i-ok"/></svg></button>
+  </div>
+  <label class="fl" for="ptN">Ажлын нэр</label>
+  <input class="inp" id="ptN" maxlength="200" placeholder="Жишээ нь: Будаг худалдаж авах">
+  <label class="fl" for="ptD">Тайлбар</label>
+  <textarea class="inp" id="ptD" rows="2" placeholder="Нэмэлт мэдээлэл…"></textarea>
+  <span class="fl">Хариуцагч</span>
+  <div class="pick cats" id="ptAs"></div>
+  <span class="fl">Эхлэх ба дуусах огноо</span>
+  <div class="two"><input class="inp" id="ptS" type="date" aria-label="Эхлэх огноо"><input class="inp" id="ptE" type="date" aria-label="Дуусах огноо"></div>
+  <div class="two"><div><label class="fl" for="ptPl">Төлөвлөсөн (₮)</label><input class="inp" id="ptPl" type="number" inputmode="numeric" min="0" step="1000" placeholder="0"></div><div><label class="fl" for="ptAc">Гарсан (₮)</label><input class="inp" id="ptAc" type="number" inputmode="numeric" min="0" step="1000" placeholder="0"></div></div>
+  <span class="fl">Төлөв</span>
+  <div class="pick" id="ptSt"><button type="button" class="s" data-v="todo">Хийх</button><button type="button" class="s" data-v="doing">Хийгдэж буй</button><button type="button" class="s" data-v="done">Дууссан</button></div>
+  <span class="fl">Чухалчлал</span>
+  <div class="pick" id="ptPr"><button type="button" class="p-low" data-v="low">Бага</button><button type="button" class="p-med" data-v="med">Дунд</button><button type="button" class="p-high" data-v="high">Өндөр</button></div>
+  <button class="big" type="submit" id="ptSave">Ажил нэмэх</button>
+  <button class="del" type="button" id="ptDel" hidden>Устгах</button>
+ </form>
+</div>
+
 <div class="auth" id="auth">
  <div class="authcard">
   <svg class="logo" viewBox="0 0 84 84" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f7d9cc"/><stop offset="1" stop-color="#d9c6f5"/></linearGradient></defs><rect width="84" height="84" rx="22" fill="url(#lg)"/><circle cx="42" cy="42" r="26" fill="#1b1a1d"/><circle cx="42" cy="42" r="18" fill="none" stroke="#fff" stroke-width="5"/><path d="M42 24a18 18 0 1 1-17.6 21.8" fill="none" stroke="#c9dc8a" stroke-width="5" stroke-linecap="round"/><path d="M34 43l6 6 10-12" fill="none" stroke="#c9dc8a" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -1114,10 +1243,10 @@ function renderCh(){
  $('chList').innerHTML=l.length?l.map(chHTML).join(''):(ui.cz==='arch'?'<div class="empty">Архив хоосон. Хугацаа нь дууссан challenge энд автоматаар орно.</div>':'<div class="empty">Идэвхтэй challenge алга.<br><button class="chip plain" type="button" data-cadd><svg class="i"><use href="#i-plus"/></svg>Challenge эхлүүлэх</button></div>');
 }
 function render(){
- ['home','cal','plans','ch','fin','stats','me','cats'].forEach(v=>$('v-'+v).hidden=ui.view!==v);
- document.querySelectorAll('.nav button').forEach(b=>{if(b.dataset.go===ui.view)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});
+ ['home','cal','plans','ch','fin','stats','me','cats','proj','pd'].forEach(v=>$('v-'+v).hidden=ui.view!==v);
+ document.querySelectorAll('.nav button').forEach(b=>{if(b.dataset.go===ui.view||(ui.view==='pd'&&b.dataset.go==='proj'))b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});
  {const cl=typeof mode!=='undefined'&&mode==='cloud';$('navAv').textContent=cl?(emailCur[0]||'?').toUpperCase():'·';$('navName').textContent=cl?emailCur:'Бүртгэлгүй горим';$('navSync').textContent=$('status').textContent}
- ({home:()=>{renderHome();renderHomeLinks()},cal:renderCal,plans:renderPlans,ch:renderCh,fin:renderFin,stats:renderStats,me:renderMe,cats:renderCats})[ui.view]();
+ ({home:()=>{renderHome();renderHomeLinks()},cal:renderCal,plans:renderPlans,ch:renderCh,fin:renderFin,stats:renderStats,me:renderMe,cats:renderCats,proj:renderProj,pd:renderPd})[ui.view]();
 }
 function go(v){ui.view=v;render();window.scrollTo({top:0})}
 
@@ -1238,9 +1367,9 @@ function restoreCh(c){c.archived=false;c.result='';c.archivedAt='';if(cEnd(c)<to
 $('cArch').onclick=()=>{const c=S.challenges.find(x=>x.id===cd.id);closeAll();if(c){archiveCh(c);persist();render()}};
 $('cDel').onclick=()=>{const c=S.challenges.find(x=>x.id===cd.id);closeAll();if(c)removeWithUndo(S.challenges,c,'устгагдлаа');persist();render()};
 function openVeil(id){$(id).classList.add('on');document.body.style.overflow='hidden'}
-function closeAll(){['veil','veilP','veilC','veilX','veilJ'].forEach(v=>$(v).classList.remove('on'));document.body.style.overflow='';draft=null;pd=null;cd=null}
+function closeAll(){['veil','veilP','veilC','veilX','veilJ','veilPP','veilPT'].forEach(v=>$(v).classList.remove('on'));document.body.style.overflow='';draft=null;pd=null;cd=null}
 document.querySelectorAll('[data-close]').forEach(b=>b.onclick=closeAll);
-['veilP','veilC','veilX','veilJ'].forEach(v=>$(v).addEventListener('click',e=>{if(e.target===$(v))closeAll()}));
+['veilP','veilC','veilX','veilJ','veilPP','veilPT'].forEach(v=>$(v).addEventListener('click',e=>{if(e.target===$(v))closeAll()}));
 function addHz(){const name=$('hzName').value.trim(),m=Math.round(+$('hzMon').value);if(!name){$('hzName').focus();return}if(!(m>=1&&m<=240)){$('hzMon').focus();return}
  const used=S.horizons.map(h=>h.color),color=PKEYS.find(c=>!used.includes(c))||'teal',id='h'+uid();S.horizons.push({id,name,months:m,color});ui.pz=id;$('hzName').value='';$('hzMon').value='';$('hzNew').hidden=true;commit()}
 $('hzAdd').onclick=addHz;
@@ -1576,7 +1705,7 @@ function startSession(user){
  if(!v){const loc=loadLocal(lsKey('local'));if(loc&&hasReal(loc)){v=loc;v.updated=Date.now()}}
  S=v||freshState();
  try{localStorage.setItem('mn-mode','cloud')}catch(e){}
- enter();setStatus('Синк хийж байна…');pull();
+ enter();setStatus('Синк хийж байна…');pull();pjCache();pjLoad();
 }
 function startLocal(){
  mode='local';uidCur=null;emailCur='';ref=null;LS=lsKey('local');S=loadLocal(LS)||freshState();
@@ -1641,7 +1770,7 @@ const isIos=()=>/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platfo
 $('meSyncNow').onclick=()=>{setStatus('Синк хийж байна…');renderMe();pull().then(renderMe)};
 $('meOut').onclick=async()=>{clearTimeout(saveT);setStatus('Гарч байна…');try{await flush()}catch(e){}
  try{await sb.auth.signOut()}catch(e){}try{localStorage.removeItem(LS);localStorage.removeItem('mn-mode')}catch(e){}
- mode=null;uidCur=null;ref=null;aTab='in';showAuth()};
+ pjReset();mode=null;uidCur=null;ref=null;aTab='in';showAuth()};
 $('meIn').onclick=()=>{aTab='up';showAuth()};
 $('expBtn').onclick=()=>{const blob=new Blob([JSON.stringify(S,null,1)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='checklist-noots-'+today()+'.json';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500);toast('Нөөц файл татагдлаа')};
 $('impFile').addEventListener('change',async e=>{const f=e.target.files&&e.target.files[0];e.target.value='';if(!f)return;
@@ -1656,9 +1785,227 @@ function renderInstallBar(){const bar=$('deskbar');if(isStandalone()){bar.hidden
  else bar.hidden=true}
 addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;renderInstallBar();if(ui.view==='me')renderMe()});
 addEventListener('appinstalled',()=>{deferredPrompt=null;renderInstallBar();toast('Апп суулгагдлаа')});
-addEventListener('online',()=>{if(mode==='cloud')pull()});
-document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&mode==='cloud')pull()});
+addEventListener('online',()=>{if(mode==='cloud'){pull();pjLoad(true)}});
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&mode==='cloud'){pull();pjLoad(true)}});
 if('serviceWorker' in navigator&&/^https?:/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{});
+
+/* ===== team projects ===== */
+let PJ={list:[],members:{},tasks:{},invites:{},loaded:false,err:'',accepted:false};
+ui.pf='active';ui.pid=null;ui.ptab='tasks';ui.pst='all';
+let pjChan=null,pjT=null,ptd=null,ppd=null,pjDelArm=false;
+const PJCOL=['#9b6cf0','#f0844f','#4e9be8','#2fb3a0','#e866a0','#8fb83a','#d9a21b','#5b6ee8'];
+const uuid=()=>(crypto.randomUUID?crypto.randomUUID():'10000000-1000-4000-8000-100000000000'.replace(/[018]/g,c=>(c^crypto.getRandomValues(new Uint8Array(1))[0]&15>>c/4).toString(16)));
+const pjOf=id=>PJ.list.find(p=>p.id===id);
+const pjTasks=id=>PJ.tasks[id]||[];
+const pjMembers=id=>PJ.members[id]||[];
+const isOwner=id=>pjMembers(id).some(m=>m.user_id===uidCur&&m.role==='owner');
+function memName(m){if(!m)return'Хуваарилаагүй';const p=m.profiles||{};return p.display_name||(p.email||'').split('@')[0]||'Гишүүн'}
+const memOf=(pid,uid)=>pjMembers(pid).find(m=>m.user_id===uid);
+function avColor(id){let h=0;for(const ch of String(id||''))h=(h*31+ch.charCodeAt(0))>>>0;return PJCOL[h%PJCOL.length]}
+function avHTML(m,size){const n=memName(m);return'<span class="pav" style="--ac:'+avColor(m&&m.user_id)+(size?';--as:'+size+'px':'')+'" title="'+esc(n)+'">'+esc((n[0]||'?').toUpperCase())+'</span>'}
+const num=v=>Math.max(0,Math.round(+v||0));
+function pjStats(pid){const t=pjTasks(pid),p=pjOf(pid)||{},d=t.filter(x=>x.status==='done').length,pl=t.reduce((s,x)=>s+num(x.planned),0),ac=t.reduce((s,x)=>s+num(x.actual),0),cap=num(p.budget),base=cap||pl;
+ const late=t.filter(x=>x.status!=='done'&&x.due_date&&x.due_date<today()).length;
+ let tp=null,left=null;if(p.start_date&&p.end_date){const all=dDiff(p.start_date,p.end_date);tp=all<=0?1:Math.max(0,Math.min(1,dDiff(p.start_date,today())/all))}if(p.end_date)left=dDiff(today(),p.end_date);
+ return{n:t.length,d,pct:t.length?Math.round(d/t.length*100):0,pl,ac,cap,base,rem:base-ac,over:base>0&&ac>base,late,tp,left}}
+function pjErrMsg(e){const m=String(e&&e.message||e||'');if(/permission|row-level|not a project member/i.test(m))return'Эрх хүрэхгүй байна.';if(/fetch|network/i.test(m))return'Интернет холболтоо шалгана уу.';return m||'Алдаа гарлаа.'}
+function pjFail(e){toast('Хадгалж чадсангүй: '+pjErrMsg(e));pjLoad(true)}
+async function pjLoad(silent){
+ if(!sb||mode!=='cloud')return;
+ try{
+  if(!PJ.accepted){PJ.accepted=true;try{const r=await sb.rpc('accept_project_invites');if(r&&r.data>0)toast(r.data+' төсөлд урилгаар нэгдлээ')}catch(e){}}
+  const[p,m,t,i]=await Promise.all([sb.from('projects').select('*').order('created_at'),sb.from('project_members').select('project_id,user_id,role,profiles(email,display_name)'),sb.from('project_tasks').select('*').order('created_at'),sb.from('project_invites').select('project_id,email,created_at')]);
+  for(const r of[p,m,t,i])if(r.error)throw r.error;
+  const g=(arr,k)=>{const o={};(arr||[]).forEach(x=>{(o[x[k]]=o[x[k]]||[]).push(x)});return o};
+  PJ.list=p.data||[];PJ.members=g(m.data,'project_id');PJ.tasks=g(t.data,'project_id');PJ.invites=g(i.data,'project_id');PJ.loaded=true;PJ.err='';
+  try{localStorage.setItem('mn-pj:'+uidCur,JSON.stringify({list:PJ.list,members:PJ.members,tasks:PJ.tasks,invites:PJ.invites}))}catch(e){}
+  pjSubscribe();
+ }catch(e){const msg=String(e&&(e.message||e.code)||'');PJ.err=(e&&(e.code==='42P01'||e.code==='PGRST205'||e.code==='PGRST200'))||/does not exist|schema cache|could not find/i.test(msg)?'setup':'net'}
+ if(ui.view==='proj'||ui.view==='pd')render();
+}
+function pjCache(){try{const c=JSON.parse(localStorage.getItem('mn-pj:'+uidCur)||'null');if(c&&Array.isArray(c.list)){Object.assign(PJ,c);PJ.loaded=true}}catch(e){}}
+function pjSubscribe(){if(pjChan||!sb.channel)return;try{pjChan=sb.channel('pj-'+uidCur);['project_tasks','projects','project_members'].forEach(tb=>pjChan.on('postgres_changes',{event:'*',schema:'public',table:tb},()=>{clearTimeout(pjT);pjT=setTimeout(()=>pjLoad(true),500)}));pjChan.subscribe()}catch(e){pjChan=null}}
+function pjReset(){try{if(pjChan&&sb.removeChannel)sb.removeChannel(pjChan)}catch(e){}pjChan=null;PJ={list:[],members:{},tasks:{},invites:{},loaded:false,err:'',accepted:false}}
+
+/* list view */
+function pjCard(p){
+ const s=pjStats(p.id),mem=pjMembers(p.id);
+ return'<article class="card pjc" data-pj="'+esc(p.id)+'" style="--c:'+esc(p.color)+'" tabindex="0"><div class="pjstrip"></div>'+
+  '<div class="row1"><span class="badge cat"><span class="dot"></span>'+mem.length+' гишүүн</span>'+(s.late?'<span class="badge" style="color:var(--high);border-color:var(--highBg)">'+s.late+' хоцорсон</span>':'')+(p.archived?'<span class="res manual">Архив</span>':'')+'</div>'+
+  '<div class="tt">'+esc(p.name)+'</div>'+(p.description?'<div class="ds">'+esc(p.description)+'</div>':'')+
+  '<div class="meters2"><div class="m2"><div class="lb"><span>Ажил '+s.d+' / '+s.n+'</span><b>'+s.pct+'%</b></div><div class="mbar"><i style="width:'+s.pct+'%"></i></div></div>'+
+  (s.base?'<div class="m2'+(s.over?' over':'')+'"><div class="lb"><span>Зарцуулалт '+money(s.ac)+' / '+money(s.base)+'</span><b>'+Math.round(s.ac/s.base*100)+'%</b></div><div class="mbar"><i style="width:'+Math.min(100,s.ac/s.base*100)+'%;background:'+(s.over?'var(--high)':'var(--ink)')+';opacity:.8"></i></div></div>':'')+'</div>'+
+  '<div class="row3"><span class="when"><svg class="i" style="width:16px;height:16px"><use href="#i-cal"/></svg>'+(p.end_date?(s.left>0?s.left+' өдөр үлдсэн':s.left===0?'Өнөөдөр дуусна':'Хугацаа хэтэрсэн'):'Хугацаагүй')+'</span><span class="pavs">'+mem.slice(0,5).map(m=>avHTML(m)).join('')+(mem.length>5?'<span class="pav more">+'+(mem.length-5)+'</span>':'')+'</span></div></article>';
+}
+function renderProj(){
+ const cloud=mode==='cloud';
+ $('pjSub').textContent=cloud?(PJ.list.filter(p=>!p.archived).length+' идэвхтэй төсөл'):'Нэвтэрсэн үед ашиглана';
+ let note='';
+ if(!cloud)note='<div class="empty">Багаараа ажиллахын тулд нэвтрэх шаардлагатай.<br><button class="chip plain" type="button" id="pjLogin">Нэвтрэх / бүртгүүлэх</button></div>';
+ else if(PJ.err==='setup')note='<div class="acfg">Төслийн хүснэгтүүд Supabase-д үүсээгүй байна. <b>supabase-projects.sql</b> файлыг Supabase-ийн SQL Editor-т ажиллуулаад хуудсаа дахин ачаална уу.</div>';
+ else if(PJ.err==='net')note='<div class="acfg">Сервертэй холбогдож чадсангүй. Сүүлд хадгалсан мэдээллийг харуулж байна.</div>';
+ else if(!PJ.loaded)note='<div class="spin"></div>';
+ $('pjNotice').innerHTML=note;
+ $('pjAdd').hidden=!cloud||PJ.err==='setup';
+ if(!cloud||PJ.err==='setup'||!PJ.loaded){$('pjMine').innerHTML='';$('pjChips').innerHTML='';$('pjList').innerHTML='';return}
+ const mine=PJ.list.filter(p=>!p.archived).flatMap(p=>pjTasks(p.id).filter(t=>t.assignee===uidCur&&t.status!=='done').map(t=>({t,p}))).sort((a,b)=>(a.t.due_date||'9999').localeCompare(b.t.due_date||'9999'));
+ $('pjMine').innerHTML=mine.length?'<div class="sechead"><h2>Надад оноогдсон</h2><span class="link" style="cursor:default">'+mine.length+' ажил</span></div><div class="minel">'+mine.slice(0,6).map(({t,p})=>{const late=t.due_date&&t.due_date<today();return'<button type="button" class="mine" data-pjt="'+esc(p.id)+'" data-tid="'+esc(t.id)+'" style="--c:'+esc(p.color)+'"><span class="dot"></span><span class="mn"><b>'+esc(t.title)+'</b><small>'+esc(p.name)+'</small></span><span class="when'+(late?' late':'')+'">'+(t.due_date?esc(shortDate(t.due_date)):'')+'</span></button>'}).join('')+'</div>':'';
+ const act=PJ.list.filter(p=>!p.archived),arc=PJ.list.filter(p=>p.archived);
+ $('pjChips').innerHTML=[['active','Идэвхтэй ('+act.length+')'],['arch','Архив ('+arc.length+')']].map(([k,v])=>'<button type="button" class="chip plain" data-pf="'+k+'" aria-pressed="'+(ui.pf===k)+'">'+v+'</button>').join('');
+ const l=(ui.pf==='arch'?arc:act).slice().sort((a,b)=>(a.end_date||'9999').localeCompare(b.end_date||'9999'));
+ $('pjList').innerHTML=l.length?l.map(pjCard).join(''):(ui.pf==='arch'?'<div class="empty">Архивласан төсөл алга.</div>':'<div class="empty">Одоогоор төсөл алга. Эхний төслөө үүсгээд багийнхнаа уриарай.<br><button class="chip plain" type="button" data-pjadd><svg class="i"><use href="#i-plus"/></svg>Төсөл үүсгэх</button></div>');
+}
+
+/* detail view */
+const PST={todo:'Хийх',doing:'Хийгдэж буй',done:'Дууссан'};
+function ptCard(t,pid){
+ const m=memOf(pid,t.assignee),late=t.status!=='done'&&t.due_date&&t.due_date<today(),diff=num(t.actual)-num(t.planned);
+ return'<article class="task pt'+(t.status==='done'?' done':'')+'" data-ptid="'+esc(t.id)+'" tabindex="0">'+
+  '<div class="row1"><span class="badge"><span class="dot" style="--c:var(--'+esc(t.priority)+')"></span>'+PR[t.priority]+'</span>'+(m?'<span class="badge ptas">'+avHTML(m,20)+esc(memName(m))+'</span>':'<span class="badge" style="color:var(--soft)">Хуваарилаагүй</span>')+'</div>'+
+  '<button class="chk" type="button" data-pact2="tog" role="checkbox" aria-checked="'+(t.status==='done')+'" aria-label="Дууссан гэж тэмдэглэх"><span>'+okSvg+'</span></button>'+
+  '<div class="tt">'+esc(t.title)+'</div>'+(t.description?'<div class="ds">'+esc(t.description)+'</div>':'')+
+  ((num(t.planned)||num(t.actual))?'<div class="ptm"><span>Төлөвлөсөн <b>'+money(num(t.planned))+'</b></span><span>Гарсан <b>'+money(num(t.actual))+'</b></span>'+(num(t.planned)&&num(t.actual)?'<span class="'+(diff>0?'warn':'okk')+'">'+(diff>0?'+'+money(diff)+' хэтэрсэн':money(-diff)+' хэмнэсэн')+'</span>':'')+'</div>':'')+
+  '<div class="row3"><span class="when'+(late?' late':'')+'"><svg class="i" style="width:16px;height:16px"><use href="#i-clock"/></svg>'+(t.due_date?esc((t.start_date&&t.start_date!==t.due_date?shortDate(t.start_date)+' → ':'')+shortDate(t.due_date))+(late?' · хоцорсон':''):'Хугацаагүй')+'</span>'+
+  '<button class="stp-btn s-'+esc(t.status)+'" type="button" data-pact2="cyc">'+PST[t.status]+'</button></div></article>';
+}
+function renderPd(){
+ const p=pjOf(ui.pid);if(!p){go('proj');return}
+ const s=pjStats(p.id),mem=pjMembers(p.id),t=pjTasks(p.id);
+ $('pdName').textContent=p.name;$('pdSub').textContent=(p.start_date||p.end_date?dotDate(p.start_date||'')+' → '+dotDate(p.end_date||''):'Хугацаа тавиагүй')+(p.archived?' · Архив':'');
+ $('pdHead').innerHTML='<div class="pdring"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="48" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="12"/><circle cx="60" cy="60" r="48" fill="none" stroke="'+esc(p.color)+'" stroke-width="12" stroke-linecap="round" stroke-dasharray="301.6" stroke-dashoffset="'+(301.6*(1-s.pct/100))+'" transform="rotate(-90 60 60)"/></svg><b><span>'+s.pct+'<small>%</small></span></b></div>'+
+  '<div class="pdst"><div><b>'+s.d+' / '+s.n+'</b><span>Дууссан ажил</span></div><div><b'+(s.left!=null&&s.left<0?' style="color:#ff8a8a"':'')+'>'+(s.left==null?'—':s.left>=0?s.left:Math.abs(s.left))+'</b><span>'+(s.left==null?'Дуусах огноо алга':s.left>=0?'Өдөр үлдсэн':'Өдөр хэтэрсэн')+'</span></div><div><b>'+(s.late||0)+'</b><span>Хоцорсон ажил</span></div></div>'+
+  '<div class="pdbud"><div><span>'+(s.cap?'Нийт төсөв':'Төлөвлөсөн')+'</span><b>'+money(s.base)+'</b></div><div><span>Гарсан</span><b>'+money(s.ac)+'</b></div><div class="'+(s.over?'over':'')+'"><span>'+(s.over?'Хэтэрсэн':'Үлдэгдэл')+'</span><b>'+money(Math.abs(s.rem))+'</b></div></div>'+
+  (s.base?'<div class="pdbar'+(s.over?' over':'')+'"><i style="width:'+Math.min(100,s.ac/s.base*100)+'%"></i>'+(s.cap&&s.pl?'<s style="left:'+Math.min(100,s.pl/s.cap*100)+'%" title="Төлөвлөсөн"></s>':'')+'</div><div class="pdnote">'+(s.cap?'Ажлуудын төлөвлөсөн нийлбэр: '+money(s.pl)+(s.pl>s.cap?' (төсвөөс '+money(s.pl-s.cap)+' их)':''):'Нийт төсөв тавиагүй: ажлуудын төлөвлөсөн дүнгээр тооцож байна')+'</div>':'');
+ $('pdMem').innerHTML='<span class="pavs">'+mem.map(m=>avHTML(m,34)).join('')+'</span><button class="chip plain" type="button" data-ptab="members"><svg class="i"><use href="#i-plus"/></svg>Гишүүн урих</button>';
+ $('pdTabs').innerHTML=[['tasks','Ажлууд ('+t.length+')'],['time','Хуваарь'],['budget','Төсөв'],['members','Гишүүд ('+mem.length+')']].map(([k,v])=>'<button type="button" class="chip plain" data-ptab="'+k+'" aria-pressed="'+(ui.ptab===k)+'">'+v+'</button>').join('');
+ let h='';
+ if(ui.ptab==='tasks'){
+  h='<div class="chips pdst2">'+[['all','Бүгд'],['mine','Минийх'],...Object.entries(PST)].map(([k,v])=>'<button type="button" class="chip plain" data-pst="'+k+'" aria-pressed="'+(ui.pst===k)+'">'+v+'</button>').join('')+'</div>';
+  const fl=t.filter(x=>ui.pst==='all'||(ui.pst==='mine'?x.assignee===uidCur:x.status===ui.pst));
+  const srt=(a,b)=>(a.due_date||'9999').localeCompare(b.due_date||'9999')||(({high:0,med:1,low:2})[a.priority]-({high:0,med:1,low:2})[b.priority]);
+  const cols=(ui.pst==='all'||ui.pst==='mine')?['todo','doing','done']:[ui.pst];
+  h+=fl.length?'<div class="kanban k'+cols.length+'">'+cols.map(st=>{const g=fl.filter(x=>x.status===st).sort(srt);return'<div class="kcol"><div class="khead"><span class="stp-btn s-'+st+'">'+PST[st]+'</span><span>'+g.length+'</span></div>'+(g.length?g.map(x=>ptCard(x,p.id)).join(''):'<div class="kempty">Хоосон</div>')+'</div>'}).join('')+'</div>'
+   :'<div class="empty">'+(t.length?'Энэ шүүлтүүрт ажил алга.':'Төсөлд ажил алга. Ажлуудаа нэмж, хариуцагч, хугацаа, төсвийг нь тавиарай.')+'<br><button class="chip plain" type="button" data-ptadd><svg class="i"><use href="#i-plus"/></svg>Ажил нэмэх</button></div>';
+ }else if(ui.ptab==='time'){
+  const dated=t.filter(x=>x.due_date||x.start_date),und=t.filter(x=>!x.due_date&&!x.start_date);
+  if(dated.length){
+   const ds=dated.flatMap(x=>[x.start_date||x.due_date,x.due_date||x.start_date]).concat([p.start_date,p.end_date,today()].filter(Boolean)).sort();
+   const lo=ds[0],hi=ds[ds.length-1],span=Math.max(1,dDiff(lo,hi)),x=d=>dDiff(lo,d)/span*100;
+   const rows=dated.slice().sort((a,b)=>(a.start_date||a.due_date).localeCompare(b.start_date||b.due_date));
+   h='<div class="road" style="--now:'+x(today())+'%"><h3>Ажлын хуваарь</h3>'+(p.end_date?'<div class="rr"><span class="rn" style="color:var(--soft)">Төслийн хугацаа</span><div class="rt"><i style="--c:'+esc(p.color)+';left:'+x(p.start_date||lo)+'%;width:'+Math.max(1.5,x(p.end_date)-x(p.start_date||lo))+'%;opacity:.35"></i></div></div>':'')+
+    rows.map(r=>{const a=r.start_date||r.due_date,b=r.due_date||r.start_date,m=memOf(p.id,r.assignee),c=r.status==='done'?'var(--low)':r.status==='doing'?'var(--doing)':(b<today()?'var(--high)':'var(--soft)');
+     return'<div class="rr" data-ptid="'+esc(r.id)+'" style="cursor:pointer"><span class="rn" title="'+esc(r.title)+'">'+(m?avHTML(m,18)+' ':'')+esc(r.title)+'</span><div class="rt"><i style="--c:'+c+';left:'+x(a)+'%;width:'+Math.max(2,x(b)-x(a))+'%"><b style="width:100%"></b></i></div></div>'}).join('')+
+    '<div class="rax"><span></span><div><span>'+esc(dotDate(lo))+'</span><span>'+esc(dotDate(hi))+'</span></div></div><div class="rleg"><s></s>Өнөөдөр · <span style="color:var(--low)">■</span> дууссан <span style="color:var(--doing)">■</span> хийгдэж буй <span style="color:var(--high)">■</span> хоцорсон</div></div>';
+  }else h='<div class="empty">Огноотой ажил алга. Ажилд эхлэх, дуусах огноо тавихад энд харагдана.</div>';
+  if(und.length)h+='<div class="sechead"><h2>Огноогүй</h2><span class="link" style="cursor:default">'+und.length+'</span></div><div class="list grid2">'+und.map(x=>ptCard(x,p.id)).join('')+'</div>';
+ }else if(ui.ptab==='budget'){
+  const bt=t.filter(x=>num(x.planned)||num(x.actual)).sort((a,b)=>num(b.planned)+num(b.actual)-num(a.planned)-num(a.actual));
+  h='<div class="budget">'+(bt.length?bt.map(x=>{const pl=num(x.planned),ac=num(x.actual),over=pl&&ac>pl,m=memOf(p.id,x.assignee);
+   return'<div class="brow'+(over?' over':'')+'" data-ptid="'+esc(x.id)+'" style="--c:'+esc(p.color)+';cursor:pointer"><div class="bn">'+(m?avHTML(m,22):'<span class="dot"></span>')+'<span>'+esc(x.title)+'</span></div><div class="bv">'+money(ac)+' <span style="color:var(--soft)">/ '+money(pl)+'</span></div><div class="mbar"><i style="width:'+(pl?Math.min(100,ac/pl*100):100)+'%;'+(pl?'':'opacity:.4')+'"></i></div><div class="bl">'+(pl?(over?money(ac-pl)+' хэтэрсэн':money(pl-ac)+' үлдсэн'):'Төлөвлөсөн дүн алга')+'</div></div>'}).join(''):'<div class="empty" style="background:none">Ажлуудад төлөвлөсөн эсвэл гарсан дүн оруулаагүй байна.</div>')+
+   '<div class="bfoot"><span>Нийт: <b style="color:var(--ink)">'+money(s.ac)+'</b> гарсан / <b style="color:var(--ink)">'+money(s.pl)+'</b> төлөвлөсөн</span>'+(s.cap?'<span>Төсөв: <b style="color:var(--ink)">'+money(s.cap)+'</b></span>':'<button class="link" type="button" data-pedit>+ Нийт төсөв тавих</button>')+'</div></div>';
+  const by=mem.map(m=>{const mt=t.filter(x=>x.assignee===m.user_id);return[m,mt.reduce((a,x)=>a+num(x.actual),0),mt.reduce((a,x)=>a+num(x.planned),0)]}).filter(r=>r[1]||r[2]);
+  const un=t.filter(x=>!x.assignee),unA=un.reduce((a,x)=>a+num(x.actual),0),unP=un.reduce((a,x)=>a+num(x.planned),0);
+  if(by.length||unA||unP){const mx=Math.max(1,...by.map(r=>Math.max(r[1],r[2])),unA,unP);
+   h+='<div class="panel2" style="margin-top:12px"><div class="ph"><b>Гишүүдээр</b><span>гарсан / төлөвлөсөн</span></div>'+by.map(([m,a,pl])=>'<div class="crow" style="--c:'+avColor(m.user_id)+';grid-template-columns:minmax(0,8em) minmax(0,1fr) auto"><span style="display:flex;gap:6px;align-items:center;min-width:0">'+avHTML(m,20)+'<span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+esc(memName(m))+'</span></span><div class="mbar"><i style="width:'+a/mx*100+'%"></i></div><b style="white-space:nowrap">'+money(a)+' / '+money(pl)+'</b></div>').join('')+
+    (unA||unP?'<div class="crow" style="--c:var(--soft);grid-template-columns:minmax(0,8em) minmax(0,1fr) auto"><span>Хуваарилаагүй</span><div class="mbar"><i style="width:'+unA/mx*100+'%"></i></div><b style="white-space:nowrap">'+money(unA)+' / '+money(unP)+'</b></div>':'')+'</div>'}
+ }else{
+  const inv=PJ.invites[p.id]||[],own=isOwner(p.id);
+  h='<div class="budget">'+mem.slice().sort((a,b)=>(a.role==='owner'?-1:0)-(b.role==='owner'?-1:0)).map(m=>{const me=m.user_id===uidCur,cnt=t.filter(x=>x.assignee===m.user_id&&x.status!=='done').length;
+   return'<div class="mrow">'+avHTML(m,40)+'<div class="mi"><b>'+esc(memName(m))+(me?' (та)':'')+'</b><small>'+esc((m.profiles||{}).email||'')+' · '+cnt+' идэвхтэй ажил</small></div><span class="res '+(m.role==='owner'?'done':'manual')+'">'+(m.role==='owner'?'Эзэн':'Гишүүн')+'</span>'+
+    (own&&!me?'<button class="bdel" type="button" data-mrm="'+esc(m.user_id)+'" aria-label="Хасах">×</button>':(!own&&me?'<button class="pill-btn red" type="button" data-mleave="1">Гарах</button>':''))+'</div>'}).join('')+
+   inv.map(v=>'<div class="mrow"><span class="pav" style="--ac:var(--soft);--as:40px">@</span><div class="mi"><b>'+esc(v.email)+'</b><small>Урилга хүлээгдэж байна · бүртгүүлмэгц нэгдэнэ</small></div><button class="bdel" type="button" data-irm="'+esc(v.email)+'" aria-label="Урилга цуцлах">×</button></div>').join('')+'</div>'+
+   '<div class="msec" style="margin-top:12px"><h3>Гишүүн урих</h3><p>Тухайн хүний имэйлийг бичнэ. Апп-д бүртгэлтэй бол шууд нэмэгдэнэ, бүртгэлгүй бол тэр имэйлээр бүртгүүлэх үед автоматаар нэгдэнэ. Апп өөрөө имэйл илгээдэггүй тул холбоосыг нь хуваалцаарай.</p>'+
+   '<div class="row"><input class="inp" id="invEmail" type="email" inputmode="email" placeholder="найз@example.com" aria-label="Урих хүний имэйл" style="flex:2 1 200px"><button class="big" type="button" id="invBtn" style="margin-top:0;flex:1 1 120px">Урих</button></div><div class="amsg" id="invMsg"></div>'+
+   '<div class="row"><button class="ghostbtn" type="button" id="copyLink">Апп-ийн холбоос хуулах</button></div><p style="font-size:13px;overflow-wrap:anywhere">'+esc(appUrl)+'</p></div>';
+ }
+ $('pdBody').innerHTML=h;
+}
+
+/* project sheet */
+function openPP(p){
+ ppd=p?{...p}:{id:null,name:'',description:'',color:PJCOL[PJ.list.length%PJCOL.length],start_date:today(),end_date:addM(today(),1),budget:0,archived:false};
+ pjDelArm=false;$('ppTitle').textContent=p?'Төсөл засах':'Шинэ төсөл';$('ppSave').textContent=p?'Хадгалах':'Төсөл үүсгэх';
+ $('ppArch').hidden=!p;$('ppArch').textContent=p&&p.archived?'Архиваас гаргах':'Архивлах';$('ppDel').hidden=!(p&&isOwner(p.id));$('ppDel').textContent='Төсөл устгах';
+ $('ppN').value=ppd.name;$('ppD').value=ppd.description;$('ppS').value=ppd.start_date||'';$('ppE').value=ppd.end_date||'';$('ppB').value=num(ppd.budget)||'';
+ $('ppCol').innerHTML=PJCOL.map(c=>'<button type="button" data-v="'+c+'" style="--c:'+c+'" aria-pressed="'+(ppd.color===c)+'" aria-label="Өнгө"></button>').join('');
+ openVeil('veilPP');if(!p)setTimeout(()=>$('ppN').focus(),60);
+}
+$('ppCol').onclick=e=>{const b=e.target.closest('button');if(!b)return;ppd.color=b.dataset.v;$('ppCol').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x.dataset.v===ppd.color))};
+$('ppSheet').addEventListener('submit',async e=>{
+ e.preventDefault();const name=$('ppN').value.trim();if(!name){$('ppN').focus();return}
+ let sd=$('ppS').value||null,ed=$('ppE').value||null;if(sd&&ed&&ed<sd)ed=sd;
+ const row={name,description:$('ppD').value.trim(),color:ppd.color,start_date:sd,end_date:ed,budget:num($('ppB').value)};
+ const btn=$('ppSave');btn.disabled=true;
+ try{
+  if(ppd.id){Object.assign(pjOf(ppd.id)||{},row);const{error}=await sb.from('projects').update(row).eq('id',ppd.id);if(error)throw error}
+  else{const id=uuid();const{error}=await sb.from('projects').insert({id,owner_id:uidCur,...row});if(error)throw error;ui.pid=id;ui.ptab='tasks';await pjLoad(true);closeAll();go('pd');toast('Төсөл үүслээ. Одоо ажлуудаа нэмж, гишүүдээ уриарай.');return}
+  closeAll();render();pjLoad(true);
+ }catch(err){toast('Хадгалж чадсангүй: '+pjErrMsg(err))}finally{btn.disabled=false}
+});
+$('ppArch').onclick=async()=>{const p=pjOf(ppd.id);if(!p)return;const v=!p.archived;p.archived=v;closeAll();if(v){ui.pf='arch'}render();toast(v?'Төсөл архивлагдлаа':'Төсөл архиваас гарлаа');const{error}=await sb.from('projects').update({archived:v}).eq('id',p.id);if(error)pjFail(error)};
+$('ppDel').onclick=async()=>{if(!pjDelArm){pjDelArm=true;$('ppDel').textContent='Дахин дарж баталгаажуулна уу: бүх ажил устна';return}
+ const id=ppd.id;closeAll();PJ.list=PJ.list.filter(p=>p.id!==id);delete PJ.tasks[id];go('proj');toast('Төсөл устгагдлаа');const{error}=await sb.from('projects').delete().eq('id',id);if(error)pjFail(error)};
+
+/* task sheet */
+function openPT(t,preset={}){
+ const pid=ui.pid;
+ ptd=t?{...t}:{id:null,project_id:pid,title:'',description:'',status:preset.status||'todo',priority:'med',assignee:null,start_date:null,due_date:null,planned:0,actual:0};
+ $('ptTitle').textContent=t?'Ажил засах':'Шинэ ажил';$('ptSave').textContent=t?'Хадгалах':'Ажил нэмэх';$('ptDel').hidden=!t;
+ $('ptN').value=ptd.title;$('ptD').value=ptd.description||'';$('ptS').value=ptd.start_date||'';$('ptE').value=ptd.due_date||'';$('ptPl').value=num(ptd.planned)||'';$('ptAc').value=num(ptd.actual)||'';
+ drawPT();openVeil('veilPT');if(!t)setTimeout(()=>$('ptN').focus(),60);
+}
+function drawPT(){
+ document.querySelectorAll('#ptSt button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===ptd.status));
+ document.querySelectorAll('#ptPr button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===ptd.priority));
+ $('ptAs').innerHTML='<button type="button" data-v="" style="--c:var(--soft)" aria-pressed="'+(!ptd.assignee)+'">Хэн ч биш</button>'+pjMembers(ptd.project_id).map(m=>'<button type="button" data-v="'+esc(m.user_id)+'" style="--c:'+avColor(m.user_id)+'" aria-pressed="'+(ptd.assignee===m.user_id)+'">'+avHTML(m,22)+' '+esc(memName(m))+(m.user_id===uidCur?' (би)':'')+'</button>').join('');
+}
+$('ptSt').onclick=e=>{const b=e.target.closest('button');if(b){ptd.status=b.dataset.v;drawPT()}};
+$('ptPr').onclick=e=>{const b=e.target.closest('button');if(b){ptd.priority=b.dataset.v;drawPT()}};
+$('ptAs').onclick=e=>{const b=e.target.closest('button');if(b){ptd.assignee=b.dataset.v||null;drawPT()}};
+$('ptSheet').addEventListener('submit',async e=>{
+ e.preventDefault();const title=$('ptN').value.trim();if(!title){$('ptN').focus();return}
+ let sd=$('ptS').value||null,ed=$('ptE').value||null;if(sd&&ed&&ed<sd)ed=sd;
+ const row={title,description:$('ptD').value.trim(),status:ptd.status,priority:ptd.priority,assignee:ptd.assignee||null,start_date:sd,due_date:ed,planned:num($('ptPl').value),actual:num($('ptAc').value)};
+ const prev=ptd.id?(pjTasks(ptd.project_id).find(x=>x.id===ptd.id)||{}).status:null;
+ if(row.status==='done'&&prev!=='done')row.done_at=new Date().toISOString();else if(row.status!=='done')row.done_at=null;
+ const pid=ptd.project_id,id=ptd.id;closeAll();
+ try{
+  if(id){const it=pjTasks(pid).find(x=>x.id===id);if(it)Object.assign(it,row);render();const{error}=await sb.from('project_tasks').update(row).eq('id',id);if(error)throw error}
+  else{const nid=uuid(),full={id:nid,project_id:pid,...row,created_at:new Date().toISOString()};(PJ.tasks[pid]=PJ.tasks[pid]||[]).push(full);render();const{error}=await sb.from('project_tasks').insert({id:nid,project_id:pid,...row});if(error)throw error}
+ }catch(err){pjFail(err)}
+});
+$('ptDel').onclick=async()=>{const id=ptd.id,pid=ptd.project_id,arr=PJ.tasks[pid]||[],it=arr.find(x=>x.id===id);closeAll();if(!it)return;arr.splice(arr.indexOf(it),1);render();toast('Ажил устгагдлаа');const{error}=await sb.from('project_tasks').delete().eq('id',id);if(error)pjFail(error)};
+async function ptSet(t,st){const row={status:st,done_at:st==='done'?new Date().toISOString():null};Object.assign(t,row);render();const{error}=await sb.from('project_tasks').update(row).eq('id',t.id);if(error)pjFail(error)}
+async function pjInvite(){
+ const em=$('invEmail').value.trim(),msg=$('invMsg');if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){msg.className='amsg bad';msg.textContent='Имэйл хаягаа зөв бичнэ үү.';$('invEmail').focus();return}
+ $('invBtn').disabled=true;msg.className='amsg';msg.textContent='Түр хүлээнэ үү…';
+ try{const{data,error}=await sb.rpc('invite_to_project',{p_project:ui.pid,p_email:em});if(error)throw error;
+  const t={added:em+' төсөлд нэмэгдлээ.',invited:'Урилга хадгалагдлаа. '+em+' апп-д энэ имэйлээр бүртгүүлэхэд төсөлд автоматаар нэгдэнэ. Апп-ийн холбоосыг нь илгээгээрэй.',already:em+' аль хэдийн гишүүн байна.'}[data]||'Боллоо.';
+  await pjLoad(true);const m2=$('invMsg');if(m2){m2.className='amsg';m2.textContent=t}
+ }catch(err){msg.className='amsg bad';msg.textContent=pjErrMsg(err)}finally{const b=$('invBtn');if(b)b.disabled=false}
+}
+$('pdBody').addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.id==='invEmail'){e.preventDefault();pjInvite()}});
+document.addEventListener('click',async e=>{
+ if(e.target.closest('#pjLogin')){aTab='in';showAuth();return}
+ if(e.target.closest('[data-pjadd]')){openPP(null);return}
+ const pf=e.target.closest('[data-pf]');if(pf){ui.pf=pf.dataset.pf;renderProj();return}
+ const mine=e.target.closest('[data-pjt]');if(mine){ui.pid=mine.dataset.pjt;ui.ptab='tasks';go('pd');const t=pjTasks(ui.pid).find(x=>x.id===mine.dataset.tid);if(t)openPT(t);return}
+ const pc=e.target.closest('.pjc[data-pj]');if(pc){ui.pid=pc.dataset.pj;ui.ptab='tasks';ui.pst='all';go('pd');return}
+ if(ui.view!=='pd')return;
+ if(e.target.closest('[data-pedit]')){openPP(pjOf(ui.pid));return}
+ if(e.target.closest('[data-ptadd]')){openPT(null);return}
+ const tb=e.target.closest('[data-ptab]');if(tb){ui.ptab=tb.dataset.ptab;renderPd();return}
+ const ps=e.target.closest('[data-pst]');if(ps){ui.pst=ps.dataset.pst;renderPd();return}
+ if(e.target.closest('#invBtn')){pjInvite();return}
+ if(e.target.closest('#copyLink')){try{await navigator.clipboard.writeText(appUrl);toast('Холбоос хуулагдлаа')}catch(err){toast('Хуулж чадсангүй. Доорх холбоосыг гараар хуулна уу.')}return}
+ const mr=e.target.closest('[data-mrm]');if(mr){const uid2=mr.dataset.mrm,arr=PJ.members[ui.pid]||[],m=arr.find(x=>x.user_id===uid2);if(m)arr.splice(arr.indexOf(m),1);renderPd();toast(memName(m)+' төслөөс хасагдлаа');const{error}=await sb.from('project_members').delete().eq('project_id',ui.pid).eq('user_id',uid2);if(error)pjFail(error);return}
+ if(e.target.closest('[data-mleave]')){const id=ui.pid;PJ.list=PJ.list.filter(p=>p.id!==id);go('proj');toast('Төслөөс гарлаа');const{error}=await sb.from('project_members').delete().eq('project_id',id).eq('user_id',uidCur);if(error)pjFail(error);return}
+ const ir=e.target.closest('[data-irm]');if(ir){const em=ir.dataset.irm;PJ.invites[ui.pid]=(PJ.invites[ui.pid]||[]).filter(v=>v.email!==em);renderPd();const{error}=await sb.from('project_invites').delete().eq('project_id',ui.pid).eq('email',em);if(error)pjFail(error);return}
+ const card=e.target.closest('[data-ptid]');
+ if(card){const t=pjTasks(ui.pid).find(x=>x.id===card.dataset.ptid);if(!t)return;const a=e.target.closest('[data-pact2]');
+  if(a&&a.dataset.pact2==='tog')ptSet(t,t.status==='done'?'todo':'done');else if(a&&a.dataset.pact2==='cyc')ptSet(t,{todo:'doing',doing:'done',done:'todo'}[t.status]);else openPT(t);return}
+});
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.classList&&e.target.classList.contains('pjc')){ui.pid=e.target.dataset.pj;go('pd')}});
 
 async function boot(){
  showAuth('loading');
