@@ -398,6 +398,10 @@ textarea.inp{resize:vertical;min-height:80px;border-radius:22px}
 .aor::before,.aor::after{content:"";flex:1;height:1px;background:var(--line)}
 .ghostbtn{width:100%;border:1.5px solid var(--line);background:var(--pill);border-radius:999px;min-height:52px;font-weight:600}
 .acfg{background:var(--medBg);color:var(--ink);border-radius:18px;padding:12px 14px;font-size:14px;margin-bottom:14px;line-height:1.45}
+.pwrap{position:relative}
+.pwrap .inp{width:100%;padding-right:56px}
+.peye{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:44px;height:44px;border:0;border-radius:50%;background:none;color:var(--soft);display:grid;place-items:center}
+.peye[aria-pressed=true]{color:var(--ink);background:var(--g3)}
 .spin{width:28px;height:28px;border-radius:50%;border:3px solid var(--line);border-top-color:var(--ink);animation:spin .9s linear infinite;margin:10px 0}
 .meav{width:48px;height:48px;border-radius:50%;border:0;background:var(--dark);color:var(--onDark);font-weight:700;font-size:18px;display:grid;place-items:center;flex:none}
 .mecard{background:var(--card);border-radius:24px;padding:18px;display:flex;align-items:center;gap:14px;margin-bottom:12px}
@@ -942,8 +946,8 @@ h1{font-size:44px}
    <div id="aCreds">
     <div class="seg2" id="aTabs"><button type="button" data-v="in">Нэвтрэх</button><button type="button" data-v="up">Бүртгүүлэх</button></div>
     <div style="display:grid;gap:10px">
-     <input class="inp" id="aEmail" type="email" inputmode="email" autocomplete="email" placeholder="Имэйл хаяг" aria-label="Имэйл хаяг">
-     <input class="inp" id="aPass" type="password" autocomplete="current-password" placeholder="Нууц үг (6+ тэмдэгт)" aria-label="Нууц үг">
+     <input class="inp" id="aEmail" type="email" inputmode="email" autocomplete="email" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Имэйл хаяг" aria-label="Имэйл хаяг">
+     <div class="pwrap"><input class="inp" id="aPass" type="password" autocomplete="current-password" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Нууц үг (6+ тэмдэгт)" aria-label="Нууц үг"><button type="button" class="peye" id="aEye" aria-label="Нууц үгийг харуулах" aria-pressed="false"><svg class="i" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
      <button class="big" type="submit" id="aSubmit">Нэвтрэх</button>
      <div class="amsg" id="aMsg" role="status"></div>
      <button class="alink" type="button" id="aForgot">Нууц үгээ мартсан уу?</button>
@@ -955,7 +959,7 @@ h1{font-size:44px}
   </form>
   <form id="aReset" hidden>
    <p class="lead" style="margin:0 0 6px">Шинэ нууц үгээ оруулна уу.</p>
-   <input class="inp" id="aNew" type="password" autocomplete="new-password" placeholder="Шинэ нууц үг (6+ тэмдэгт)" aria-label="Шинэ нууц үг">
+   <input class="inp" id="aNew" type="password" autocomplete="new-password" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Шинэ нууц үг (6+ тэмдэгт)" aria-label="Шинэ нууц үг">
    <button class="big" type="submit">Хадгалах</button>
    <div class="amsg bad" id="aMsg2"></div>
   </form>
@@ -1726,7 +1730,7 @@ function hideAuth(){$('auth').hidden=true;document.body.style.overflow=''}
 function drawTab(){document.querySelectorAll('#aTabs button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===aTab));$('aSubmit').textContent=aTab==='in'?'Нэвтрэх':'Бүртгүүлэх';$('aPass').autocomplete=aTab==='in'?'current-password':'new-password';$('aForgot').hidden=aTab!=='in';$('aMsg').textContent=''}
 function aSay(t,bad){$('aMsg').textContent=t;$('aMsg').className='amsg'+(bad?' bad':'')}
 const authErr=e=>{const m=String(e&&e.message||e||'');
- if(/invalid login/i.test(m))return'Имэйл эсвэл нууц үг буруу байна.';
+ if(/invalid login/i.test(m))return'Имэйл эсвэл нууц үг буруу байна. Нүдний дүрс дээр дарж нууц үгээ шалгана уу. Энэ имэйлээр бүртгүүлээгүй бол «Бүртгүүлэх» хэсгээр орно.';
  if(/not confirmed/i.test(m))return'Имэйлээ баталгаажуулаагүй байна. Ирсэн захидлын холбоос дээр дарна уу.';
  if(/already registered|already exists/i.test(m))return'Энэ имэйлээр бүртгэл байна. «Нэвтрэх» хэсгээр орно уу.';
  if(/password.*(6|short|least)/i.test(m))return'Нууц үг хамгийн багадаа 6 тэмдэгт байна.';
@@ -1749,6 +1753,7 @@ $('aForm').addEventListener('submit',async e=>{
 $('aForgot').onclick=async()=>{const email=$('aEmail').value.trim();if(!email){aSay('Эхлээд имэйл хаягаа бичнэ үү.',true);$('aEmail').focus();return}
  try{const{error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:appUrl});if(error)throw error;aSay('Нууц үг сэргээх холбоосыг '+email+' руу илгээлээ.')}catch(err){aSay(authErr(err),true)}};
 $('aLocal').onclick=startLocal;
+$('aEye').onclick=()=>{const p=$('aPass'),on=p.type==='password';p.type=on?'text':'password';$('aEye').setAttribute('aria-pressed',on);$('aEye').setAttribute('aria-label',on?'Нууц үгийг нуух':'Нууц үгийг харуулах')};
 $('aReset').addEventListener('submit',async e=>{e.preventDefault();const p=$('aNew').value;if(p.length<6){$('aMsg2').textContent='Хамгийн багадаа 6 тэмдэгт.';return}
  try{const{data,error}=await sb.auth.updateUser({password:p});if(error)throw error;startSession(data.user);toast('Нууц үг шинэчлэгдлээ')}catch(err){$('aMsg2').textContent=authErr(err)}});
 /* profile */
