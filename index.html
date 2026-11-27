@@ -411,6 +411,7 @@ textarea.inp{resize:vertical;min-height:80px;border-radius:22px}
 .mecard span.meav{color:var(--onDark);font-size:24px}
 .msec{background:var(--card);border-radius:24px;padding:16px;margin-bottom:12px;display:grid;gap:10px}
 .msec h3{margin:0;font-size:16px;font-weight:600}
+.msec .inp{background:var(--g3)}
 .msec p{margin:0;color:var(--soft);font-size:14px;line-height:1.45}
 .msec .row{display:flex;gap:8px;flex-wrap:wrap}
 .msec .row>*{flex:1 1 150px}
@@ -725,6 +726,15 @@ h1{font-size:44px}
    <p id="meCounts"></p>
    <div class="row"><button class="ghostbtn" type="button" id="meSyncNow">Одоо синк хийх</button><button class="ghostbtn" type="button" id="meIn">Нэвтрэх / бүртгүүлэх</button><button class="ghostbtn" type="button" id="meOut" style="color:var(--high)">Гарах</button></div>
   </div>
+  <div class="msec" id="pwBox">
+   <h3>Нууц үг солих</h3>
+   <div class="pwrap"><input class="inp" id="meCur" type="password" autocomplete="current-password" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Одоогийн нууц үг" aria-label="Одоогийн нууц үг"><button type="button" class="peye" data-eye="meCur" aria-label="Нууц үгийг харуулах" aria-pressed="false"><svg class="i" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
+   <div class="pwrap"><input class="inp" id="meNew" type="password" autocomplete="new-password" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Шинэ нууц үг (6+ тэмдэгт)" aria-label="Шинэ нууц үг (6+ тэмдэгт)"><button type="button" class="peye" data-eye="meNew" aria-label="Нууц үгийг харуулах" aria-pressed="false"><svg class="i" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
+   <div class="pwrap"><input class="inp" id="meNew2" type="password" autocomplete="new-password" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Шинэ нууц үгээ давтах" aria-label="Шинэ нууц үгээ давтах"><button type="button" class="peye" data-eye="meNew2" aria-label="Нууц үгийг харуулах" aria-pressed="false"><svg class="i" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
+   <button class="big" type="button" id="meSavePw" style="margin-top:0">Нууц үг солих</button>
+   <div class="amsg" id="mePwMsg" role="status"></div>
+   <p>Одоогийн нууц үгээ мартсан бол гараад, нэвтрэх хуудасны «Нууц үгээ мартсан уу?» товчоор имэйлээр сэргээнэ.</p>
+  </div>
   <div class="msec" id="instBox">
    <h3>Утсанд апп болгон суулгах</h3>
    <button class="big" type="button" id="instBtn" style="margin-top:0">Апп суулгах</button>
@@ -947,7 +957,7 @@ h1{font-size:44px}
     <div class="seg2" id="aTabs"><button type="button" data-v="in">Нэвтрэх</button><button type="button" data-v="up">Бүртгүүлэх</button></div>
     <div style="display:grid;gap:10px">
      <input class="inp" id="aEmail" type="email" inputmode="email" autocomplete="email" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Имэйл хаяг" aria-label="Имэйл хаяг">
-     <div class="pwrap"><input class="inp" id="aPass" type="password" autocomplete="current-password" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Нууц үг (6+ тэмдэгт)" aria-label="Нууц үг"><button type="button" class="peye" id="aEye" aria-label="Нууц үгийг харуулах" aria-pressed="false"><svg class="i" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
+     <div class="pwrap"><input class="inp" id="aPass" type="password" autocomplete="current-password" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Нууц үг (6+ тэмдэгт)" aria-label="Нууц үг"><button type="button" class="peye" data-eye="aPass" aria-label="Нууц үгийг харуулах" aria-pressed="false"><svg class="i" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
      <button class="big" type="submit" id="aSubmit">Нэвтрэх</button>
      <div class="amsg" id="aMsg" role="status"></div>
      <button class="alink" type="button" id="aForgot">Нууц үгээ мартсан уу?</button>
@@ -958,8 +968,9 @@ h1{font-size:44px}
    <p class="amsg" style="text-align:center">Бүртгэлгүй үед өгөгдөл зөвхөн энэ төхөөрөмжид хадгалагдана. Дараа нь бүртгүүлэхэд хамт шилжинэ.</p>
   </form>
   <form id="aReset" hidden>
-   <p class="lead" style="margin:0 0 6px">Шинэ нууц үгээ оруулна уу.</p>
-   <input class="inp" id="aNew" type="password" autocomplete="new-password" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Шинэ нууц үг (6+ тэмдэгт)" aria-label="Шинэ нууц үг">
+   <p class="lead" style="margin:0 0 6px">Нууц үг сэргээх: шинэ нууц үгээ оруулна уу.</p>
+   <div class="pwrap"><input class="inp" id="aNew" type="password" autocomplete="new-password" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Шинэ нууц үг (6+ тэмдэгт)" aria-label="Шинэ нууц үг (6+ тэмдэгт)"><button type="button" class="peye" data-eye="aNew" aria-label="Нууц үгийг харуулах" aria-pressed="false"><svg class="i" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
+   <div class="pwrap"><input class="inp" id="aNew2" type="password" autocomplete="new-password" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Шинэ нууц үгээ давтах" aria-label="Шинэ нууц үгээ давтах"><button type="button" class="peye" data-eye="aNew2" aria-label="Нууц үгийг харуулах" aria-pressed="false"><svg class="i" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
    <button class="big" type="submit">Хадгалах</button>
    <div class="amsg bad" id="aMsg2"></div>
   </form>
@@ -1753,8 +1764,24 @@ $('aForm').addEventListener('submit',async e=>{
 $('aForgot').onclick=async()=>{const email=$('aEmail').value.trim();if(!email){aSay('Эхлээд имэйл хаягаа бичнэ үү.',true);$('aEmail').focus();return}
  try{const{error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:appUrl});if(error)throw error;aSay('Нууц үг сэргээх холбоосыг '+email+' руу илгээлээ.')}catch(err){aSay(authErr(err),true)}};
 $('aLocal').onclick=startLocal;
-$('aEye').onclick=()=>{const p=$('aPass'),on=p.type==='password';p.type=on?'text':'password';$('aEye').setAttribute('aria-pressed',on);$('aEye').setAttribute('aria-label',on?'Нууц үгийг нуух':'Нууц үгийг харуулах')};
-$('aReset').addEventListener('submit',async e=>{e.preventDefault();const p=$('aNew').value;if(p.length<6){$('aMsg2').textContent='Хамгийн багадаа 6 тэмдэгт.';return}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-eye]');if(!b)return;const p=$(b.dataset.eye),on=p.type==='password';p.type=on?'text':'password';b.setAttribute('aria-pressed',on);b.setAttribute('aria-label',on?'Нууц үгийг нуух':'Нууц үгийг харуулах')});
+$('meSavePw').onclick=async()=>{
+ const cur=$('meCur').value,n1=$('meNew').value,n2=$('meNew2').value,msg=$('mePwMsg'),say=(t,bad)=>{msg.textContent=t;msg.className='amsg'+(bad?' bad':'')};
+ if(!cur){say('Одоогийн нууц үгээ оруулна уу.',true);$('meCur').focus();return}
+ if(n1.length<6){say('Шинэ нууц үг хамгийн багадаа 6 тэмдэгт байна.',true);$('meNew').focus();return}
+ if(n1!==n2){say('Шинэ нууц үг хоёр таарахгүй байна.',true);$('meNew2').focus();return}
+ if(n1===cur){say('Шинэ нууц үг одоогийнхоосоо өөр байх ёстой.',true);return}
+ const btn=$('meSavePw');btn.disabled=true;say('Түр хүлээнэ үү…');
+ try{
+  const v=await sb.auth.signInWithPassword({email:emailCur,password:cur});
+  if(v.error){say(/invalid login/i.test(v.error.message)?'Одоогийн нууц үг буруу байна.':authErr(v.error),true);return}
+  const{error}=await sb.auth.updateUser({password:n1});if(error)throw error;
+  ['meCur','meNew','meNew2'].forEach(k=>{$(k).value='';$(k).type='password'});
+  say('Нууц үг солигдлоо. Бусад төхөөрөмж дээрээ шинэ нууц үгээр нэвтэрнэ.');toast('Нууц үг солигдлоо');
+ }catch(err){const m=String(err&&err.message||'');say(/same|different from the old/i.test(m)?'Шинэ нууц үг хуучнаасаа өөр байх ёстой.':/reauth/i.test(m)?'Supabase нэмэлт баталгаажуулалт шаардаж байна. Гараад «Нууц үгээ мартсан уу?» товчоор сэргээнэ үү.':authErr(err),true)}
+ finally{btn.disabled=false}
+};
+$('aReset').addEventListener('submit',async e=>{e.preventDefault();const p=$('aNew').value;if(p.length<6){$('aMsg2').textContent='Хамгийн багадаа 6 тэмдэгт.';return}if(p!==$('aNew2').value){$('aMsg2').textContent='Хоёр нууц үг таарахгүй байна.';return}
  try{const{data,error}=await sb.auth.updateUser({password:p});if(error)throw error;startSession(data.user);toast('Нууц үг шинэчлэгдлээ')}catch(err){$('aMsg2').textContent=authErr(err)}});
 /* profile */
 function renderMe(){
@@ -1763,7 +1790,7 @@ function renderMe(){
  $('meName').textContent=cloud?emailCur:'Бүртгэлгүй горим';
  $('meSub').textContent=cloud?'Утас, компьютер бүх төхөөрөмж дээрээ ижил өгөгдөлтэй':'Өгөгдөл зөвхөн энэ төхөөрөмжид хадгалагдаж байна';
  $('meSync').textContent=$('status').textContent;
- $('meSyncNow').hidden=!cloud;$('meOut').hidden=!cloud;$('meIn').hidden=cloud||!sb;
+ $('meSyncNow').hidden=!cloud;$('meOut').hidden=!cloud;$('meIn').hidden=cloud||!sb;$('pwBox').hidden=!cloud;
  const n={i:S.items.length,p:S.plans.length,c:S.challenges.length,t:S.tx.length};
  $('meCounts').textContent=n.i+' ажил · '+n.p+' төлөвлөгөө · '+n.c+' challenge · '+n.t+' гүйлгээ';
  $('impBox').hidden=!pendingImport;
