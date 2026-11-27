@@ -726,6 +726,12 @@ h1{font-size:44px}
    <p id="meCounts"></p>
    <div class="row"><button class="ghostbtn" type="button" id="meSyncNow">Одоо синк хийх</button><button class="ghostbtn" type="button" id="meIn">Нэвтрэх / бүртгүүлэх</button><button class="ghostbtn" type="button" id="meOut" style="color:var(--high)">Гарах</button></div>
   </div>
+  <div class="msec" id="recBox">
+   <h3>Өгөгдөл сэргээх</h3>
+   <p>Энэ төхөөрөмж болон серверт хадгалагдсан хуучин хуулбаруудыг хайж, одоогийн өгөгдөлтэй <b>нэгтгэнэ</b>. Одоо байгаа зүйл устахгүй.</p>
+   <button class="ghostbtn" type="button" id="recFind">Хуучин хуулбар хайх</button>
+   <div id="recList"></div>
+  </div>
   <div class="msec" id="pwBox">
    <h3>Нууц үг солих</h3>
    <div class="pwrap"><input class="inp" id="meCur" type="password" autocomplete="current-password" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Одоогийн нууц үг (мэдэхгүй бол хоосон орхино)" aria-label="Одоогийн нууц үг"><button type="button" class="peye" data-eye="meCur" aria-label="Нууц үгийг харуулах" aria-pressed="false"><svg class="i" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
@@ -1694,30 +1700,60 @@ const lsKey=u=>'mn-checklist-v1:'+(u||'local');
 const timeNow=()=>{const d=new Date();return pad(d.getHours())+':'+pad(d.getMinutes())};
 function loadLocal(key){try{return norm(JSON.parse(localStorage.getItem(key)||'null'))}catch(e){return null}}
 function hasReal(st){return[...st.items,...st.plans,...st.challenges,...st.tx,...st.jars].some(x=>!x.sample)}
+/* --- safe sync: never overwrite another device's data; merge instead --- */
+const baseKey=()=>'mn-base:'+uidCur;
+const getBase=()=>{try{const v=localStorage.getItem(baseKey());return v==null?null:+v}catch(e){return null}};
+const setBase=v=>{try{localStorage.setItem(baseKey(),String(v))}catch(e){}};
+function snapshot(st,why){try{if(!st||!hasReal(st))return;const k='mn-snap:'+(uidCur||'local')+':'+Date.now();localStorage.setItem(k,JSON.stringify({why,at:Date.now(),data:st}));
+ const ks=Object.keys(localStorage).filter(x=>x.startsWith('mn-snap:'+(uidCur||'local')+':')).sort();while(ks.length>8)localStorage.removeItem(ks.shift())}catch(e){}}
+function mergeStates(a,b){ // a,b normalized; union by id so nothing is lost
+ if(!b||!hasReal(b))return a;if(!a||!hasReal(a))return b;
+ const newer=(b.updated||0)>=(a.updated||0)?b:a,older=newer===a?b:a;
+ const uni=(x,y)=>{const m=new Map();(x||[]).forEach(i=>m.set(i.id,i));(y||[]).forEach(i=>m.set(i.id,i));
+  const arr=[...m.values()],real=arr.some(i=>!i.sample),sx=new Set((x||[]).filter(i=>i.sample).map(i=>i.id)),sy=new Set((y||[]).filter(i=>i.sample).map(i=>i.id));
+  return real?arr.filter(i=>!i.sample||(sx.has(i.id)&&sy.has(i.id))):arr};
+ const r={...newer};
+ ['items','plans','challenges','tx','jars','cats','horizons'].forEach(k=>r[k]=uni(older[k],newer[k]));
+ r.fcats={exp:uni(older.fcats&&older.fcats.exp,newer.fcats&&newer.fcats.exp),inc:uni(older.fcats&&older.fcats.inc,newer.fcats&&newer.fcats.inc)};
+ ['budgets','fnames','fcolors'].forEach(k=>r[k]={...(older[k]||{}),...(newer[k]||{})});
+ r.fhidden=[...new Set([...(older.fhidden||[]),...(newer.fhidden||[])])];
+ r.earned=[...new Set([...(older.earned||[]),...(newer.earned||[])])];
+ r.sb=!!(older.sb&&newer.sb);r.updated=Date.now();
+ return norm(r);
+}
+function adopt(next,why){snapshot(S,why);S=next;try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}sweep();checkBadges();render()}
+async function fetchRemote(){const{data,error}=await sb.from('app_state').select('data,updated_at').eq('user_id',uidCur).maybeSingle();if(error)throw error;return data&&data.data?norm(data.data):null}
+async function upsertRemote(){const{error}=await sb.from('app_state').upsert({user_id:uidCur,data:JSON.parse(JSON.stringify(S)),updated_at:new Date(S.updated||Date.now()).toISOString()},{onConflict:'user_id'});if(error)throw error;setBase(S.updated||0)}
+const syncErr=e=>setStatus(navigator.onLine===false?'Интернетгүй байна. Өөрчлөлт энэ төхөөрөмжид хадгалагдаж, холбогдох үед синк хийгдэнэ.':/permission denied/i.test(String(e&&e.message))?'Синк хийж чадсангүй: Supabase-д хандах эрх тохируулагдаагүй (supabase.sql-ийг дахин ажиллуулна уу)':'Синк хийж чадсангүй. Дараа дахин оролдоно.');
 async function flush(){
  if(!sb||!uidCur)return;
  if(saving){again=true;return}
  saving=true;
- try{const{error}=await sb.from('app_state').upsert({user_id:uidCur,data:JSON.parse(JSON.stringify(S)),updated_at:new Date(S.updated||Date.now()).toISOString()},{onConflict:'user_id'});if(error)throw error;setStatus('Синк хийгдсэн · '+timeNow())}
- catch(e){setStatus(navigator.onLine===false?'Интернетгүй байна. Холбогдох үед автоматаар синк хийнэ.':/permission denied/i.test(String(e&&e.message))?'Синк хийж чадсангүй: Supabase-д хандах эрх тохируулагдаагүй (supabase.sql-ийг дахин ажиллуулна уу)':'Синк хийж чадсангүй. Дараа дахин оролдоно.')}
+ try{
+  const base=getBase(),remote=await fetchRemote();
+  if(remote&&(base==null||(remote.updated||0)>base)){adopt(mergeStates(remote,S),'merge-before-save');}
+  await upsertRemote();setStatus('Синк хийгдсэн · '+timeNow());
+ }catch(e){syncErr(e)}
  saving=false;if(again){again=false;flush()}
 }
 async function pull(){
  if(!sb||!uidCur)return;
  try{
-  const{data,error}=await sb.from('app_state').select('data,updated_at').eq('user_id',uidCur).maybeSingle();if(error)throw error;
-  const remote=data&&data.data?norm(data.data):null;
-  if(remote&&(remote.updated||0)>(S.updated||0)){S=remote;try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}sweep();checkBadges();render();setStatus('Синк хийгдсэн · '+timeNow())}
-  else if(!remote||(S.updated||0)>(remote.updated||0)){if(!S.updated)S.updated=Date.now();flush()}
-  else setStatus('Синк хийгдсэн · '+timeNow());
- }catch(e){setStatus(navigator.onLine===false?'Интернетгүй байна. Өөрчлөлт энэ төхөөрөмжид хадгалагдаж байна.':'Сервертэй холбогдож чадсангүй.')}
+  const base=getBase(),remote=await fetchRemote(),dirty=base==null?hasReal(S):(S.updated||0)>base;
+  if(!remote){if(hasReal(S)){if(!S.updated)S.updated=Date.now();await upsertRemote()}setStatus('Синк хийгдсэн · '+timeNow());return}
+  if(base==null||(remote.updated||0)>base){
+   if(dirty){adopt(mergeStates(remote,S),'merge');await upsertRemote()}
+   else{adopt(remote,'remote');setBase(remote.updated||0)}
+  }else if(dirty){await upsertRemote()}
+  setStatus('Синк хийгдсэн · '+timeNow());
+ }catch(e){syncErr(e)}
 }
 function enter(){hideAuth();sweep();checkBadges();go('home')}
 function startSession(user){
  if(mode==='cloud'&&uidCur===user.id){hideAuth();return}
  mode='cloud';uidCur=user.id;emailCur=user.email||'';LS=lsKey(uidCur);ref=true;
  let v=loadLocal(LS);
- if(!v){const loc=loadLocal(lsKey('local'));if(loc&&hasReal(loc)){v=loc;v.updated=Date.now()}}
+ if(!v){const loc=loadLocal(lsKey('local'));if(loc&&hasReal(loc))v=loc}
  S=v||freshState();
  try{localStorage.setItem('mn-mode','cloud')}catch(e){}
  enter();setStatus('Синк хийж байна…');pull();pjCache();pjLoad();
@@ -1765,6 +1801,34 @@ $('aForgot').onclick=async()=>{const email=$('aEmail').value.trim();if(!email){a
  try{const{error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:appUrl});if(error)throw error;aSay('Нууц үг сэргээх холбоосыг '+email+' руу илгээлээ.')}catch(err){aSay(authErr(err),true)}};
 $('aLocal').onclick=startLocal;
 document.addEventListener('click',e=>{const b=e.target.closest('[data-eye]');if(!b)return;const p=$(b.dataset.eye),on=p.type==='password';p.type=on?'text':'password';b.setAttribute('aria-pressed',on);b.setAttribute('aria-label',on?'Нууц үгийг нуух':'Нууц үгийг харуулах')});
+
+/* recovery */
+let recFound=[];
+const realCount=st=>({i:st.items.filter(x=>!x.sample).length,p:st.plans.filter(x=>!x.sample).length,c:st.challenges.filter(x=>!x.sample).length,t:st.tx.filter(x=>!x.sample).length,j:st.jars.filter(x=>!x.sample).length});
+const cntTxt=c=>[c.i&&c.i+' ажил',c.p&&c.p+' төлөвлөгөө',c.c&&c.c+' challenge',c.t&&c.t+' гүйлгээ',c.j&&c.j+' сав'].filter(Boolean).join(' · ')||'хоосон';
+const whenTxt=ms=>{if(!ms)return'огноо тодорхойгүй';const d=new Date(ms);return dotDate(ymd(d))+' '+pad(d.getHours())+':'+pad(d.getMinutes())};
+async function findCopies(){
+ const out=[];let histNote='';
+ try{for(const k of Object.keys(localStorage)){
+  if(k===lsKey('local')||k.startsWith('mn-snap:'+uidCur+':')||k.startsWith('mn-snap:local:')){
+   try{const raw=JSON.parse(localStorage.getItem(k));const st=norm(raw&&raw.data?raw.data:raw);if(st&&hasReal(st))out.push({src:k===lsKey('local')?'Энэ төхөөрөмж · бүртгэлгүй горим':'Энэ төхөөрөмж · автомат нөөц',at:(raw&&raw.at)||st.updated||0,st})}catch(e){}
+  }}}catch(e){}
+ if(sb&&uidCur){try{const{data,error}=await sb.from('app_state_history').select('id,saved_at,data').order('saved_at',{ascending:false}).limit(60);
+  if(error)histNote='Серверийн түүх идэвхжээгүй байна (supabase-history.sql).';else(data||[]).forEach(r=>{const st=norm(r.data);if(st&&hasReal(st))out.push({src:'Сервер · түүх',at:Date.parse(r.saved_at),st})})}catch(e){histNote='Серверт холбогдож чадсангүй.'}}
+ return{out:out.sort((a,b)=>b.at-a.at),histNote};
+}
+$('recFind').onclick=async()=>{
+ const btn=$('recFind');btn.disabled=true;btn.textContent='Хайж байна…';
+ const{out,histNote}=await findCopies();recFound=out;btn.disabled=false;btn.textContent='Дахин хайх';
+ const cur=realCount(S);
+ $('recList').innerHTML='<p style="margin-top:6px">Одоогийн өгөгдөл: <b>'+cntTxt(cur)+'</b></p>'+(out.length?out.map((r,k)=>{const c=realCount(r.st);
+   return'<div class="mrow"><div class="mi"><b>'+esc(whenTxt(r.at))+'</b><small>'+esc(r.src)+' · '+esc(cntTxt(c))+'</small></div><button class="pill-btn dark" type="button" data-rec="'+k+'">Нэгтгэх</button></div>'}).join(''):'<p>Энэ төхөөрөмж дээр хуучин хуулбар олдсонгүй.</p>')+(histNote?'<p style="font-size:13px">'+esc(histNote)+'</p>':'');
+};
+$('recList').addEventListener('click',e=>{const b=e.target.closest('[data-rec]');if(!b)return;const r=recFound[+b.dataset.rec];if(!r)return;
+ const before=realCount(S);snapshot(S,'before-restore');S=mergeStates(r.st,S);S.earned=null;commit();const after=realCount(S);
+ const d=['i','p','c','t','j'].map(k=>after[k]-before[k]);
+ toast(d.some(x=>x>0)?'Нэгтгэлээ: '+cntTxt({i:d[0],p:d[1],c:d[2],t:d[3],j:d[4]})+' нэмэгдлээ':'Шинэ зүйл нэмэгдсэнгүй, бүгд аль хэдийн байна');
+ b.textContent='Нэгтгэсэн';b.disabled=true});
 $('meSavePw').onclick=async()=>{
  const cur=$('meCur').value,n1=$('meNew').value,n2=$('meNew2').value,msg=$('mePwMsg'),say=(t,bad)=>{msg.textContent=t;msg.className='amsg'+(bad?' bad':'')};
  if(n1.length<6){say('Шинэ нууц үг хамгийн багадаа 6 тэмдэгт байна.',true);$('meNew').focus();return}
@@ -1789,6 +1853,7 @@ function renderMe(){
  $('meName').textContent=cloud?emailCur:'Бүртгэлгүй горим';
  $('meSub').textContent=cloud?'Утас, компьютер бүх төхөөрөмж дээрээ ижил өгөгдөлтэй':'Өгөгдөл зөвхөн энэ төхөөрөмжид хадгалагдаж байна';
  $('meSync').textContent=$('status').textContent;
+ $('recList').innerHTML='';$('recFind').textContent='Хуучин хуулбар хайх';
  $('meSyncNow').hidden=!cloud;$('meOut').hidden=!cloud;$('meIn').hidden=cloud||!sb;$('pwBox').hidden=!cloud;
  const n={i:S.items.length,p:S.plans.length,c:S.challenges.length,t:S.tx.length};
  $('meCounts').textContent=n.i+' ажил · '+n.p+' төлөвлөгөө · '+n.c+' challenge · '+n.t+' гүйлгээ';
@@ -2052,6 +2117,7 @@ async function boot(){
  else if(pref==='local')startLocal();
  else showAuth();
 }
+window.__app={get S(){return S},get uid(){return uidCur},pull:()=>pull()};
 renderInstallBar();
 boot();
 
