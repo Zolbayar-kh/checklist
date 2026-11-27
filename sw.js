@@ -1,5 +1,5 @@
 // Offline-д ажиллуулах service worker. Апп-аа шинэчлэх бүрт CACHE-ийн дугаарыг нэмэгдүүлээрэй.
-const CACHE = 'checklist-v1';
+const CACHE = 'checklist-v2';
 const ASSETS = ['./', './index.html', './config.js', './manifest.webmanifest',
   './vendor/supabase.js',
   './icons/icon-192.png', './icons/icon-512.png', './icons/apple-touch-icon.png'];
