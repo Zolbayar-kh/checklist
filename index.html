@@ -728,12 +728,12 @@ h1{font-size:44px}
   </div>
   <div class="msec" id="pwBox">
    <h3>Нууц үг солих</h3>
-   <div class="pwrap"><input class="inp" id="meCur" type="password" autocomplete="current-password" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Одоогийн нууц үг" aria-label="Одоогийн нууц үг"><button type="button" class="peye" data-eye="meCur" aria-label="Нууц үгийг харуулах" aria-pressed="false"><svg class="i" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
+   <div class="pwrap"><input class="inp" id="meCur" type="password" autocomplete="current-password" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Одоогийн нууц үг (мэдэхгүй бол хоосон орхино)" aria-label="Одоогийн нууц үг"><button type="button" class="peye" data-eye="meCur" aria-label="Нууц үгийг харуулах" aria-pressed="false"><svg class="i" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
    <div class="pwrap"><input class="inp" id="meNew" type="password" autocomplete="new-password" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Шинэ нууц үг (6+ тэмдэгт)" aria-label="Шинэ нууц үг (6+ тэмдэгт)"><button type="button" class="peye" data-eye="meNew" aria-label="Нууц үгийг харуулах" aria-pressed="false"><svg class="i" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
    <div class="pwrap"><input class="inp" id="meNew2" type="password" autocomplete="new-password" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Шинэ нууц үгээ давтах" aria-label="Шинэ нууц үгээ давтах"><button type="button" class="peye" data-eye="meNew2" aria-label="Нууц үгийг харуулах" aria-pressed="false"><svg class="i" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
    <button class="big" type="button" id="meSavePw" style="margin-top:0">Нууц үг солих</button>
    <div class="amsg" id="mePwMsg" role="status"></div>
-   <p>Одоогийн нууц үгээ мартсан бол гараад, нэвтрэх хуудасны «Нууц үгээ мартсан уу?» товчоор имэйлээр сэргээнэ.</p>
+   <p>Одоогийн нууц үгээ мэдэхгүй бол эхний нүдийг хоосон орхиод шинэ нууц үгээ тохируулна. Энэ нь зөвхөн нэвтэрсэн төхөөрөмж дээр боломжтой.</p>
   </div>
   <div class="msec" id="instBox">
    <h3>Утсанд апп болгон суулгах</h3>
@@ -1767,14 +1767,13 @@ $('aLocal').onclick=startLocal;
 document.addEventListener('click',e=>{const b=e.target.closest('[data-eye]');if(!b)return;const p=$(b.dataset.eye),on=p.type==='password';p.type=on?'text':'password';b.setAttribute('aria-pressed',on);b.setAttribute('aria-label',on?'Нууц үгийг нуух':'Нууц үгийг харуулах')});
 $('meSavePw').onclick=async()=>{
  const cur=$('meCur').value,n1=$('meNew').value,n2=$('meNew2').value,msg=$('mePwMsg'),say=(t,bad)=>{msg.textContent=t;msg.className='amsg'+(bad?' bad':'')};
- if(!cur){say('Одоогийн нууц үгээ оруулна уу.',true);$('meCur').focus();return}
  if(n1.length<6){say('Шинэ нууц үг хамгийн багадаа 6 тэмдэгт байна.',true);$('meNew').focus();return}
  if(n1!==n2){say('Шинэ нууц үг хоёр таарахгүй байна.',true);$('meNew2').focus();return}
- if(n1===cur){say('Шинэ нууц үг одоогийнхоосоо өөр байх ёстой.',true);return}
+ if(cur&&n1===cur){say('Шинэ нууц үг одоогийнхоосоо өөр байх ёстой.',true);return}
  const btn=$('meSavePw');btn.disabled=true;say('Түр хүлээнэ үү…');
  try{
-  const v=await sb.auth.signInWithPassword({email:emailCur,password:cur});
-  if(v.error){say(/invalid login/i.test(v.error.message)?'Одоогийн нууц үг буруу байна.':authErr(v.error),true);return}
+  if(cur){const v=await sb.auth.signInWithPassword({email:emailCur,password:cur});
+  if(v.error){say(/invalid login/i.test(v.error.message)?'Одоогийн нууц үг буруу байна. Мэдэхгүй бол энэ нүдийг хоосон орхиорой.':authErr(v.error),true);return}}
   const{error}=await sb.auth.updateUser({password:n1});if(error)throw error;
   ['meCur','meNew','meNew2'].forEach(k=>{$(k).value='';$(k).type='password'});
   say('Нууц үг солигдлоо. Бусад төхөөрөмж дээрээ шинэ нууц үгээр нэвтэрнэ.');toast('Нууц үг солигдлоо');
