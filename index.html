@@ -62,7 +62,7 @@ h2{font-size:20px;font-weight:600;margin:0;letter-spacing:-.01em}
 .pstats i{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.1);display:grid;place-items:center;font-style:normal}
 .pstats b{display:block;font-size:17px;font-weight:600;line-height:1.1;font-variant-numeric:tabular-nums}
 .pstats span{font-size:12.5px;color:#bdb8c2}
-.hscroll{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding:2px 2px 6px;margin:0 -16px;padding-inline:16px;scrollbar-width:none}
+.hscroll{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding:2px 2px 6px;margin:0 -16px;padding-inline:16px;scroll-padding-inline:16px;scrollbar-width:none}
 .hscroll::-webkit-scrollbar{display:none}
 .hscroll>*{scroll-snap-align:start;flex:none}
 .catc{width:170px;background:var(--card);border:0;border-radius:22px;padding:14px;text-align:left}
@@ -529,6 +529,22 @@ h1{font-size:44px}
 .road .rn .pav{vertical-align:-4px}
 @media(min-width:760px){.kanban.k3{grid-template-columns:repeat(3,minmax(0,1fr))}.pdhead{grid-template-columns:auto minmax(0,1fr) minmax(0,1.4fr)}.pdbud{grid-column:auto}.pdbar,.pdnote{grid-column:2/-1}}
 @media(min-width:1040px){.nav .nav-desk{display:flex}.homecal{display:none}#v-pd .top .circle:first-child{display:grid}}
+#fRep{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+#fRep button{padding:0 10px}
+@media(min-width:520px){#fRep{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:420px){.pick button{padding:0 8px;font-size:15px}}
+input.inp[type=date],input.inp[type=time]{-webkit-appearance:none;appearance:none;display:block;height:52px;max-width:100%;line-height:24px;text-align:left}
+input.inp[type=date]::-webkit-date-and-time-value,input.inp[type=time]::-webkit-date-and-time-value{text-align:left;min-height:24px}
+input.inp[type=date]::-webkit-calendar-picker-indicator,input.inp[type=time]::-webkit-calendar-picker-indicator{opacity:.55}
+.bmore{width:100%;border:0;border-top:1px solid var(--line);background:none;min-height:48px;color:var(--doing);font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px}
+.bmore svg{width:16px;height:16px;transition:transform .2s}
+.bmore.open svg{transform:rotate(180deg)}
+@media(max-width:1039px){
+.top .circle.dark,.datehead .circle.dark{position:fixed;right:max(18px,env(safe-area-inset-right));bottom:calc(max(14px,env(safe-area-inset-bottom)) + 86px);width:60px;height:60px;z-index:6;box-shadow:0 12px 28px rgba(20,10,30,.30)}
+.top .circle.dark svg,.datehead .circle.dark svg{width:26px;height:26px}
+.toast{left:16px;right:96px;transform:none;max-width:none;justify-content:space-between}
+.app{padding-bottom:170px}
+}
 [hidden]{display:none!important}
 @media(max-width:380px){.ring{width:108px;height:108px}.prog{gap:12px;padding:16px}.tl{grid-template-columns:48px minmax(0,1fr)}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
@@ -558,6 +574,7 @@ h1{font-size:44px}
  <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></symbol>
  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15zM10 20.5a2 2 0 0 0 4 0"/></symbol>
  <symbol id="i-team" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 19.5c.6-3.4 3-5.3 6-5.3s5.4 1.9 6 5.3"/><circle cx="17" cy="9" r="2.5"/><path d="M15.8 14.3c2.6-.2 4.6 1.4 5.2 4.2"/></symbol>
+ <symbol id="i-chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
  <symbol id="i-arch" viewBox="0 0 24 24"><rect x="3.5" y="4" width="17" height="5" rx="1.5"/><path d="M5 9v9.5A1.5 1.5 0 0 0 6.5 20h11a1.5 1.5 0 0 0 1.5-1.5V9M10 13h4"/></symbol>
 </svg>
 
@@ -1453,7 +1470,7 @@ $('ncName').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault(
 $('clearSample').onclick=()=>{S.items=S.items.filter(i=>!i.sample);S.plans=S.plans.filter(p=>!p.sample);S.challenges=S.challenges.filter(c=>!c.sample);S.tx=S.tx.filter(x=>!x.sample);S.jars=S.jars.filter(j=>!j.sample);if(S.sb){S.budgets={};S.sb=false}S.earned=null;commit()};
 
 /* ===== finance ===== */
-ui.fm=today().slice(0,7);ui.tf='all';ui.budEdit=false;ui.sp='7';
+ui.fm=today().slice(0,7);ui.tf='all';ui.budEdit=false;ui.sp='7';ui.budAll=(()=>{try{return localStorage.getItem('mn-budall')==='1'}catch(e){return false}})();
 let xd=null,jd=null;
 const monthName=m=>{const[y,mo]=m.split('-');return y+' оны '+(+mo)+'-р сар'};
 const signMoney=n=>(n<0?'−':'')+money(Math.abs(n));
@@ -1509,11 +1526,14 @@ function renderFin(){
    '<div class="bfoot"><span>Нийт төсөв: <b style="color:var(--ink)">'+money(bt)+'</b></span><span>Өнгөт цэг дээр дарж өнгө солино</span></div>'+
    (hid.length?'<div class="bfoot" style="justify-content:flex-start">Нуусан: '+hid.map(([k,n])=>'<button type="button" class="pill-btn" data-bunhide="'+esc(k)+'">'+esc(n)+' ↺</button>').join('')+'</div>':'');
  }else{
-  const rows=finList('exp',true).filter(([k])=>(!S.fhidden.includes(k)&&S.budgets[k])||spent[k]).sort((a,b)=>(spent[b[0]]||0)-(spent[a[0]]||0));
-  $('budget').innerHTML=rows.length?rows.map(([k,n,c])=>{const sp=spent[k]||0,b=S.budgets[k]||0,over=b&&sp>b,pc=b?Math.min(100,sp/b*100):sp/maxS*100;
+  const ovr=k=>S.budgets[k]&&(spent[k]||0)>S.budgets[k]?1:0;
+  const rows=finList('exp',true).filter(([k])=>(!S.fhidden.includes(k)&&S.budgets[k])||spent[k]).sort((a,b)=>(ovr(b[0])-ovr(a[0]))||((spent[b[0]]||0)-(spent[a[0]]||0)));
+  const LIM=4,shown=ui.budAll?rows:rows.slice(0,LIM);
+  $('budget').innerHTML=rows.length?shown.map(([k,n,c])=>{const sp=spent[k]||0,b=S.budgets[k]||0,over=b&&sp>b,pc=b?Math.min(100,sp/b*100):sp/maxS*100;
     return'<div class="brow'+(over?' over':'')+'" style="--c:'+c+'"><div class="bn"><span class="dot"></span><span>'+esc(n)+'</span></div>'+
      '<div class="bv">'+money(sp)+(b?' <span style="color:var(--soft)">/ '+money(b)+'</span>':'')+'</div>'+
-     '<div class="mbar"><i style="width:'+pc+'%;'+(b?'':'opacity:.4')+'"></i></div><div class="bl">'+(b?(over?money(sp-b)+' хэтэрсэн':money(b-sp)+' үлдсэн'):'Төсөв тогтоогоогүй')+'</div></div>'}).join('')
+     '<div class="mbar"><i style="width:'+pc+'%;'+(b?'':'opacity:.4')+'"></i></div><div class="bl">'+(b?(over?money(sp-b)+' хэтэрсэн':money(b-sp)+' үлдсэн'):'Төсөв тогтоогоогүй')+'</div></div>'}).join('')+
+    (rows.length>LIM?'<button type="button" class="bmore'+(ui.budAll?' open':'')+'" id="budMore">'+(ui.budAll?'Хураах':'Бүгдийг харах · +'+(rows.length-LIM)+' ангилал')+'<svg class="i"><use href="#i-chev"/></svg></button>':'')
    :'<div class="empty" style="background:none">Төсөв тогтоогоогүй, энэ сард зарлага алга.<br><button class="chip plain" type="button" id="budStart">Төсөв тогтоох</button></div>';
  }
  $('txChips').innerHTML=[['all','Бүгд'],['exp','Зарлага'],['inc','Орлого']].map(([k,v])=>'<button type="button" class="chip plain" data-tf="'+k+'" aria-pressed="'+(ui.tf===k)+'">'+v+'</button>').join('');
@@ -1581,6 +1601,7 @@ function budAdd(){const n=$('bnNew').value.trim();if(!n){$('bnNew').focus();retu
  if(amt>0)S.budgets[id]=amt;S.sb=false;persist();renderFin();$('bnNew').focus()}
 $('budget').addEventListener('click',e=>{
  if(e.target.closest('#budStart')){ui.budEdit=true;renderFin();return}
+ if(e.target.closest('#budMore')){ui.budAll=!ui.budAll;try{localStorage.setItem('mn-budall',ui.budAll?'1':'')}catch(err){}renderFin();if(!ui.budAll)$('budget').scrollIntoView({behavior:'smooth',block:'nearest'});return}
  if(e.target.closest('#bnAdd')){budAdd();return}
  const cb=e.target.closest('[data-bcol]');
  if(cb){const k=cb.dataset.bcol,cu=S.fcats.exp.find(c=>c.id===k),cur=(finList('exp',true).find(c=>c[0]===k)||[])[2],nx=FALL[(FALL.indexOf(cur)+1)%FALL.length];
